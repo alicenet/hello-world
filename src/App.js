@@ -1,25 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Lander, PageWrap, HeaderMenu, Footer } from 'components';
 
+/**
+ * Root application entry component.
+ * @component
+ * @example
+ * ReactDOM.render( <App />, document.getElementById('roo
+') );
+ */
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+    return (
+        <Router>
+
+            <HeaderMenu />
+
+            <PageWrap>
+
+                <Routes>
+
+                    <Route path="/" element={<Lander />} />
+
+                </Routes>
+
+            </PageWrap>
+
+            <Footer />
+
+        </Router>
+    );
 }
 
 export default App;

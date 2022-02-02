@@ -11,6 +11,9 @@
 # production
 /build
 
+# docs
+/docs
+
 # misc
 .DS_Store
 .env.local
@@ -21,3 +24,8 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# transpiled local ES6
+/src/config/abis.js
+/src/config/bytecodes.js
+/src/config/contract_names.js
