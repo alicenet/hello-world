@@ -15,12 +15,10 @@ let madWallet = new MadWallet();
 class MadNetAdapter {
 
     constructor() {
-
-        console.log('config', initialConfigurationState)
-
+        
         this.wallet = () => madWallet; // Get latest madWallet for any actions needing it.
-        this.provider = () => initialConfigurationState.mad_net_provider//(store.getState().config.mad_net_provider || initialConfigurationState.mad_net_provider);
-        this.chainID = () => initialConfigurationState.mad_net_chainID//(store.getState().config.mad_net_chainID || initialConfigurationState.mad_net_chainID);
+        this.provider = () => initialConfigurationState.mad_net_provider;
+        this.chainID = () => initialConfigurationState.mad_net_chainID;
 
         this.subscribed = false;
         this.isInitializing = false; // Is the instance currently initializing? -- Used to prevent repeat initializations
