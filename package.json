@@ -23,7 +23,8 @@
   "resolutions": {
     "nth-check": "2.0.1",
     "postcss": "8.4.5",
-    "pug": "3.0.2"
+    "pug": "3.0.2",
+    "axios": "0.25.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -53,10 +54,10 @@
     ]
   },
   "devDependencies": {
-    "assert": "^2.0.0",
+    "assert": "2.0.0",
     "autoprefixer": "10.4.2",
     "better-docs": "2.7.1",
-    "buffer": "^6.0.3",
+    "buffer": "6.0.3",
     "postcss": "8.4.5",
     "redux-devtools-extension": "2.13.9",
     "stream": "0.0.2",
