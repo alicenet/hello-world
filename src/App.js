@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Lander, PageWrap, HeaderMenu, Footer } from 'components';
+import { useDispatch } from 'react-redux';
+import { ADAPTER_ACTIONS } from 'redux/actions';
 
 /**
  * Root application entry component.
@@ -10,6 +12,10 @@ import { Lander, PageWrap, HeaderMenu, Footer } from 'components';
 ') );
  */
 function App() {
+    
+    const dispatch = useDispatch();
+
+    dispatch(ADAPTER_ACTIONS.initMadNet());
 
     return (
         <Router>
