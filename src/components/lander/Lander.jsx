@@ -3,8 +3,6 @@ import { Segment } from "semantic-ui-react";
 export function Lander() {
 
     return (
-
-        <div>
             
             <Segment className="text-left">
 
@@ -17,8 +15,6 @@ export function Lander() {
                     </div>
                 </div>
             </Segment>
-
-        </div>
 
     )
 
