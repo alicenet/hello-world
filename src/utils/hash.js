@@ -1,4 +1,4 @@
-import ethers from 'ethers';
+import { ethers } from 'ethers';
 
 /**
  * Return keccak256 hash of an input

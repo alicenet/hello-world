@@ -1,8 +1,12 @@
 import { Segment } from "semantic-ui-react";
+import { useNavigate } from 'react-router-dom';
 
 export function Lander() {
+    const navigate = useNavigate();
 
     return (
+            
+        <div>
             
             <Segment className="text-left">
 
@@ -15,6 +19,14 @@ export function Lander() {
                     </div>
                 </div>
             </Segment>
+
+            <Segment className="text-left">
+                <div className="text-big font-bold cursor-pointer" onClick={() => navigate('/wallet')}>
+                    Add account
+                </div>
+            </Segment>
+
+        </div>
 
     )
 
