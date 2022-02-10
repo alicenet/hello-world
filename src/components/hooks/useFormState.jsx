@@ -2,7 +2,7 @@ import React from 'react';
 import upperFirst from 'lodash/upperFirst';
 import isEmpty from 'lodash/isEmpty';
 import validator from 'validator';
-import Web3 from 'web3';
+import { ethers } from 'ethers';
 
 export const fieldType = {
     ADDRESS: 'address',
@@ -184,7 +184,7 @@ function _validateValueByType(value, type) {
     }
     switch (type) {
         case fieldType.ADDRESS:
-            return Web3.utils.isAddress(value);
+            return ethers.utils.isAddress(value);
         case fieldType.STRING:
             return typeof value === "string" && value !== "";
         case fieldType.INT:

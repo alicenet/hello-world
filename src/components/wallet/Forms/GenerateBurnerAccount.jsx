@@ -9,13 +9,13 @@ export function GenerateBurnerAccount(){
     const createBurnerAccount = async () => {
         let pRaw = new Date().valueOf()
         let hash = await madAdapter.getMadNetWalletInstance().Utils.hash("0x" + pRaw.toString());
-        await madAdapter.getMadNetWalletInstance().Account.addAccount(hash, 2)
-        setAddress(madAdapter.getMadNetWalletInstance().Account.accounts[0].address)
+        await madAdapter.getMadNetWalletInstance().Account.addAccount(hash);
+        setAddress(madAdapter.getMadNetWalletInstance().Account.accounts[0].address);
     }
 
     return  <div className="text-center">
                 <Button size="small" basic onClick={createBurnerAccount} disabled={address}>Generate Burner Wallet</Button>
-                <div>{address}</div>
+                <div>{address ? `Created account: ${address}`: ''}</div>
             </div>
 
 }
