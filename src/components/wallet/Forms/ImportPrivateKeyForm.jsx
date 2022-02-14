@@ -3,6 +3,8 @@ import { useFormState } from 'components/hooks';
 import { Form, Header, Message } from 'semantic-ui-react';
 import utils from 'utils';
 import madAdapter from 'adapters/madAdapter';
+import { WALLET_ACTIONS } from 'redux/actions';
+import { useDispatch } from 'react-redux';
 
 export function ImportPrivateKeyForm({ hideTitle }) {
 
@@ -15,6 +17,8 @@ export function ImportPrivateKeyForm({ hideTitle }) {
     const [success] = useState(false);
     const [loading, setLoading] = useState(false);
 
+    const dispatch = useDispatch();
+
     const verifyPrivKey = async () => {
         try {
             setLoading(true);
@@ -23,6 +27,8 @@ export function ImportPrivateKeyForm({ hideTitle }) {
             setError(false);
             setLoading(false);
             await madAdapter.getMadNetWalletInstance().Account.addAccount(formState.privateKey.value);
+            const newAddress = madAdapter.getMadNetWalletInstance().Account.accounts[madAdapter.getMadNetWalletInstance().Account.accounts.length-1].address;
+            dispatch(WALLET_ACTIONS.addWallet(newAddress));
         } catch (ex) {
             setLoading(false);
             setError(ex.message);

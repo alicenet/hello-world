@@ -1,4 +1,3 @@
-/* Action Type Constants for ../reducer/configuration */
 export const ADAPTER_ACTION_TYPES = {
     SET_DISCONNECTED: "SET_DISCONNECTED",
     SET_MADNET_CONNECTED: "SET_MADNET_CONNECTED",

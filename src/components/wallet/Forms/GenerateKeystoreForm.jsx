@@ -3,6 +3,8 @@ import { useFormState } from 'components/hooks';
 import { Button, Form, Header } from 'semantic-ui-react';
 import utils from 'utils';
 import madAdapter from 'adapters/madAdapter';
+import { WALLET_ACTIONS } from 'redux/actions';
+import { useDispatch } from 'react-redux';
 
 export function GenerateKeystoreForm(
     {
@@ -24,6 +26,8 @@ export function GenerateKeystoreForm(
 
     const downloadRef = useRef();
 
+    const dispatch = useDispatch();
+
     const loadKeystore = () => {
         setLoadingKeystoreLoad(true);
         try{
@@ -33,7 +37,9 @@ export function GenerateKeystoreForm(
                 let ksJSON = JSON.parse(res.target.result);
                 let ks = await utils.wallet.unlockKeystore(ksJSON, formState.password.value);
                 await madAdapter.getMadNetWalletInstance().Account.addAccount(ks.privateKey);
-                setAddress(madAdapter.getMadNetWalletInstance().Account.accounts[0].address);
+                const newAddress = madAdapter.getMadNetWalletInstance().Account.accounts[madAdapter.getMadNetWalletInstance().Account.accounts.length-1].address;
+                setAddress(newAddress);
+                dispatch(WALLET_ACTIONS.addWallet(newAddress));
                 setLoadingKeystoreLoad(false);
             }
         }catch(err){
