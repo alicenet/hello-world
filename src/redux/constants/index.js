@@ -1,2 +1,3 @@
 export * from './application';
-export * from './adapters';
+export * from './adapter';
+export * from './wallet';
