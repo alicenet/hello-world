@@ -6,15 +6,19 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-    title: 'My Site',
-    tagline: 'Dinosaurs are cool',
+    title: 'MadNet - HelloWorld',
+    tagline: 'Simple on-chain data',
     url: 'https://your-docusaurus-test-site.com',
     baseUrl: '/',
     onBrokenLinks: 'throw',
     onBrokenMarkdownLinks: 'warn',
     favicon: 'img/favicon.ico',
-    organizationName: 'facebook', // Usually your GitHub org/user name.
-    projectName: 'docusaurus', // Usually your repo name.
+    organizationName: 'MadBase', // Usually your GitHub org/user name.
+    projectName: 'madnet-hello-world', // Usually your repo name.
+    plugins: [
+        require.resolve('./sitePlugin'),
+        'docusaurus-tailwindcss'
+    ],
 
     presets: [
         [
@@ -24,13 +28,7 @@ const config = {
                 docs: {
                     sidebarPath: require.resolve('./sidebars.js'),
                     // Please change this to your repo.
-                    editUrl: 'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
-                },
-                blog: {
-                    showReadingTime: true,
-                    // Please change this to your repo.
-                    editUrl:
-                        'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+                    editUrl: 'https://github.com/MadBase/madnet-hello-world/docs/',
                 },
                 theme: {
                     customCss: require.resolve('./src/css/custom.css'),
@@ -46,17 +44,16 @@ const config = {
                 disableSwitch: true,
             },
             navbar: {
-                title: 'MadNet - HelloWorld',
+                title: 'MadNet',
                 logo: {
                     alt: 'My Site Logo',
                     src: 'img/icon.png',
                 },
                 items: [
                     {
-                        type: 'doc',
-                        docId: 'about/about',
                         position: 'left',
                         label: 'About',
+                        to: "/about"
                     },
                     {
                         type: 'doc',
@@ -65,9 +62,16 @@ const config = {
                         label: 'Tutorial',
                     },
                     {
-                        href: 'https://github.com/facebook/docusaurus',
-                        label: 'GitHub',
-                        position: 'left',
+                        href: 'https://github.com/MadBase/MadNet',
+                        label: 'MadNet',
+                        position: 'right',
+                        className: 'header-github-link',
+                    },
+                    {
+                        href: 'https://github.com/MadBase/MadNetJS',
+                        label: 'MadNetJS',
+                        position: 'right',
+                        className: 'header-github-link',
                     },
                 ],
             },
@@ -94,18 +98,14 @@ const config = {
                                 label: 'Discord',
                                 href: 'https://discordapp.com/invite/docusaurus',
                             },
-                            {
-                                label: 'Twitter',
-                                href: 'https://twitter.com/docusaurus',
-                            },
                         ],
                     },
                     {
                         title: 'More',
                         items: [
                             {
-                                label: 'Blog',
-                                to: '/blog',
+                                label: 'Blog (To New Website Blog)',
+                                to: 'https://google.com',
                             },
                             {
                                 label: 'GitHub',
@@ -114,7 +114,7 @@ const config = {
                         ],
                     },
                 ],
-                copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+                copyright: `Copyright © ${new Date().getFullYear()} MadNet`,
             },
             prism: {
                 theme: lightCodeTheme,
