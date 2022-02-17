@@ -1,10 +1,5 @@
 import { ethers } from 'ethers';
 
-export const curveTypes = {
-    SECP256K1: 1,
-    BARRETO_NAEHRIG: 2,
-}
-
 /**
  * Generate and return a new JSON blob representing the data for a keystore.
  * @param { Boolean } asBlob - Return keystore as a blob?
@@ -33,7 +28,7 @@ export async function generateKeystoreFromPrivK(privK, password, asBlob) {
 }
 
 /**
- * Unlock a keystore using web3.utils
+ * Unlock a keystore using ethers
  * @param {*} keystore - Keystore JSON to unlock
  * @param {*} password - Password to use to unlock the json
  */
