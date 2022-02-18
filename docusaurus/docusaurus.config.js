@@ -6,8 +6,8 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-    title: 'MadNet - HelloWorld',
-    tagline: 'Simple on-chain data',
+    title: 'alice.net - hello alice',
+    tagline: 'A simple, secure, Layer 2 solution',
     url: 'https://your-docusaurus-test-site.com',
     baseUrl: '/',
     onBrokenLinks: 'throw',
@@ -28,7 +28,7 @@ const config = {
                 docs: {
                     sidebarPath: require.resolve('./sidebars.js'),
                     // Please change this to your repo.
-                    editUrl: 'https://github.com/MadBase/madnet-hello-world/docs/',
+                    editUrl: 'https://github.com/MadBase/madnet-hello-world/',
                 },
                 theme: {
                     customCss: require.resolve('./src/css/custom.css'),
@@ -44,7 +44,7 @@ const config = {
                 disableSwitch: true,
             },
             navbar: {
-                title: 'MadNet',
+                title: 'alice.net',
                 logo: {
                     alt: 'My Site Logo',
                     src: 'img/icon.png',
@@ -62,14 +62,19 @@ const config = {
                         label: 'Tutorial',
                     },
                     {
+                        position: 'left',
+                        label: 'Quick Start',
+                        to: "/quickstart"
+                    },
+                    {
                         href: 'https://github.com/MadBase/MadNet',
-                        label: 'MadNet',
+                        label: 'alice.net',
                         position: 'right',
                         className: 'header-github-link',
                     },
                     {
                         href: 'https://github.com/MadBase/MadNetJS',
-                        label: 'MadNetJS',
+                        label: 'aliceJS',
                         position: 'right',
                         className: 'header-github-link',
                     },

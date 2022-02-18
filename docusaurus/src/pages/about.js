@@ -5,7 +5,9 @@ export default function() {
 
     return (
         <Layout>
-            test
+            <div className="page-wrap">
+                Fancy Splash / About in a nutshell?
+            </div>
         </Layout>
     )
 

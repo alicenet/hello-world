@@ -3,15 +3,19 @@ sidebar_position: 1
 ---
 
 import Link from '@docusaurus/Link';
-import { Button } from 'semantic-ui-react'
+import { Button, Segment } from 'semantic-ui-react'
 
-# MadNet - A Crash Course
+# alice - A Primer
 
-Dive into MadNet headfirst with this getting started guide.
+:::tip TIP
 
-## Summary
+If you just want to dive in, check out the [Quick Start](/quickstart)!
 
-MadNet is a Layer 2 Blockchain that...
+:::
+
+## What Is It?
+
+alice.net is a Layer 2 Blockchain that...
 
 
 Lorem markdownum gentemque secuti dixit, et diversa: incurrere hic. Plurima
@@ -30,33 +34,45 @@ aequantibus arto, carinae. Non quae *peto*.
 
 ## Getting Started
 
-This tutorial has two paths to utilize in learning how MadNet works. 
+This tutorial has two paths to utilize in learning how alice.net works. 
 
-The general path is the same. You'll generate a wallet, fund it, and explore sending transactions and storing data on MadNet's testnet.
+The general idea is the same. You'll generate a wallet, fund it, and explore sending transactions and storing data on MadNet's testnet.
 
-### [UI Guided Tutorial](/docs/UI%20-%20Tutorial/create-a-wallet)
+The following path is recommended depending how far you wish to dive:
 
-This tutorial path shows what is possible while abstracting the underlying MadNetJS layer.
+1. Start with [Quick Start](/quickstart), to get a glimpse at what alice.net is capable of
+2. Then cycle back to [UI Breakdown](/docs/UI%20-%20The%20Breakdown/create-a-wallet) to see what's happening beneath the UI layer.
+3. Finally, for those who wish to implement their own layer of interaction with alice.net, step into the underlying API, *aliceJS*
 
-You won't look at code here, but you'll be able to interact with MadNet!
+
+### [Quick Start](/quickstart)
+
+This path shows what is possible while abstracting the underlying alice.js layer.
+
+You won't look at code here, but you'll be able to interact directly with alice.net using a lite-ui built with aliceJS just for this tutorial.
 
 With the UI Guided tutorial you will be able to:
 
-- Generate a wallet for use with MadNet
-- Connect to testnet
+- Generate a wallet for use with alice.net testnet
 - Fund your new wallet from the testnet faucet
-- Learn About TXs on MadNet
+- Learn about TXs on alice.net
 - Send value TXs to other wallets
-- Create and view data stores*
+- Create and view some data stores*
 
-<sub>*Data stores are an integral part of the MadNet chain and how data is stored on-chain.</sub> 
+<sub>*Data stores are an integral part of the alice.net and how data is stored on-chain.</sub> 
 
-<Button size={"mini"} primary as={Link} content="test" className="mt-2 bg-red-500" />
+<Segment basic style={{padding: "0rem"}}>
+    <Button size='mini' primary as={Link} to="/quickstart" content="To Quick Start" icon="arrow right" labelPosition="right" />
+</Segment>
 
-### MadNetJS Tutorial
+### [aliceJS Tutorial](/docs/MadNetJS%20Tutorial/create-a-wallet)
 
-The MadNetJS tutorial demonstrates the underlying library with code examples to that you can implement MadNetJS yourself.
+The aliceJS tutorial demonstrates the underlying library with code examples to that you can implement aliceJS yourself.
 
-We recommend diving into the UI Tutorial first, if you are looking to see the network in action before diving into the library tutorial
+We recommend diving into the [Quick Start](/quickstart) first, if you are looking to see the network in action before diving into the aliceJS tutorial.
 
-After that go ahead and jump into the MadNetJS Tutorial for a deep dive on the underlying library.
+After that go ahead and jump into for a deep dive on the underlying API.
+
+<Segment basic style={{padding: "0rem"}}>
+    <Button size='mini' primary as={Link} to="/docs/MadNetJS%20Tutorial/create-a-wallet" content="To aliceJS Tutorial" icon="arrow right" labelPosition="right" />
+</Segment>
