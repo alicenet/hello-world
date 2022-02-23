@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Lander, Wallet, PageWrap, HeaderMenu, Footer } from 'components';
+import { Lander, Wallet, Transactions, PageWrap, HeaderMenu, Footer } from 'components';
 import { useDispatch } from 'react-redux';
 import { ADAPTER_ACTIONS } from 'redux/actions';
 
@@ -28,6 +28,8 @@ function App() {
                     <Route path="/" element={<Lander />} />
 
                     <Route path="/wallet" element={<Wallet />} />
+
+                    <Route path="/transactions" element={<Transactions />} />
 
                 </Routes>
 

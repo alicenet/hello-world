@@ -27,7 +27,7 @@ export function GenerateBurnerAccount(){
     }
 
     return  <div className="text-center">
-                {wallets.map(wallet => <div>{wallet} <span className="cursor-pointer text-red-500" onClick={() => removeAccount(wallet)}>Remove</span></div>)}
+                {wallets.map(wallet => <div key={wallet}>{wallet} <span className="cursor-pointer text-red-500" onClick={() => removeAccount(wallet)}>Remove</span></div>)}
                 <Button size="small" basic onClick={createBurnerAccount}>Generate Burner Wallet</Button>
                 <div>{address ? `Created account: ${address}`: ''}</div>
             </div>

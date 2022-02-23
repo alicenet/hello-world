@@ -1,8 +1,10 @@
 import { Segment } from "semantic-ui-react";
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 export function Lander() {
     const navigate = useNavigate();
+    const { wallets } = useSelector(state => ({ wallets: state.wallet.wallets }));
 
     return (
             
@@ -25,6 +27,16 @@ export function Lander() {
                     Add account
                 </div>
             </Segment>
+
+
+            {wallets?.length > 0 ? 
+            <Segment className="text-left">
+                <div className="text-big font-bold cursor-pointer" onClick={() => navigate('/transactions')}>
+                    Transactions
+                </div>
+            </Segment> :
+            <>There are currently no added wallets</>}
+            
 
         </div>
 

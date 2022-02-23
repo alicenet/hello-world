@@ -1,6 +1,7 @@
 import MadWallet from 'madnetjs';
 import store from 'redux/store/store';
-import { ADAPTER_ACTION_TYPES } from 'redux/constants';
+import { ADAPTER_ACTION_TYPES, TRANSACTION_ACTION_TYPES } from 'redux/constants';
+import { TRANSACTION_ACTIONS } from 'redux/actions';
 
 export const initialConfigurationState = {
     ethereum_provider: process.env.REACT_APP__ETHEREUM_PROVIDER, // Ethereum RPC endpoint
@@ -9,6 +10,8 @@ export const initialConfigurationState = {
     registry_contract_address: process.env.REACT_APP__REGISTRY_CONTRACT_ADDRESS, // Contract address for Registry Contract
     advanced_settings: false,
 }
+
+const SECP256K1 = 1;
 
 let madWallet = new MadWallet();
 
@@ -108,6 +111,12 @@ class MadNetAdapter {
                 minTxFee: fees.MinTxFee,
                 valueStoreFee: fees.ValueStoreFee
             });
+            store.dispatch(TRANSACTION_ACTIONS.parseAndUpdateFees({
+                atomicSwapFee: fees.AtomicSwapFee,
+                dataStoreFee: fees.DataStoreFee,
+                minTxFee: fees.MinTxFee,
+                valueStoreFee: fees.ValueStoreFee
+            }));
             return { success: true }
         } catch (ex) {
             this.failed.set(ex.message);
@@ -143,7 +152,122 @@ class MadNetAdapter {
         return { get: getter, set: setter };
     }
 
+    addTxOut(txOut) {
+        try {
+            let newTxOuts = [...this.txOuts.get()];
+            newTxOuts.push(txOut);
+            this.txOuts.set(newTxOuts);
+            return newTxOuts;
+        } catch (ex) {
+            return { error: ex };
+        }
+    }
 
+    /**
+     * Create Tx from sent txOuts
+     * @param { Boolean } send - Should the tx also be sent?
+     * @returns
+     */
+    async createTx() {
+        if (this.pendingTx.get()) {
+            return ({ error: "Waiting for pending transaction to be mined" });
+        }
+        this.pendingTxStatus.set("Sending transaction");
+        for await (const txOut of this.txOuts.get()) {
+            try {
+                switch (txOut.type) {
+                    case "VS":
+                        await this.wallet().Transaction.createValueStore(txOut.fromAddress, txOut.value, txOut.toAddress, SECP256K1)
+                        break;
+                    case "DS":
+                        await this.wallet().Transaction.createDataStore(txOut.fromAddress, txOut.index, txOut.duration, txOut.rawData)
+                        break;
+                    default:
+                        throw new Error("Invalid TxOut type");
+                }
+            } catch (ex) {
+                this.clearTXouts();
+                this.changeAddress.set({});
+                await this.wallet().Transaction._reset();
+                return ({ error: ex.message });
+            }
+        }
+        return true; // Just return true if no failure
+    }
+
+    /**
+     * After createTx has been called, get estimated fees for the Tx
+     * @returns { Object } - Estimated Fees object
+     */
+    async getEstimatedFees() {
+        return await this.wallet().Transaction.getTxFeeEstimates(this.changeAddress.get()["address"], this.changeAddress.get()["bnCurve"], [], true);
+    }
+
+    clearTXouts() {
+        try {
+            let newTxOuts = [];
+            this.txOuts.set(newTxOuts);
+            return newTxOuts;
+        } catch (ex) {
+            return { error: ex };
+        }
+    }
+
+    // TODO: REFACTOR: Move string types to constant configuration file, eg fn names to remove chance of mistypes
+    backOffRetry(fn, reset) {
+        if (reset) {
+            this[String(fn) + "-timeout"] = 1000;
+            this[String(fn) + "-attempts"] = 1;
+            return;
+        }
+        if (!this[String(fn) + "-timeout"]) {
+            this[String(fn) + "-timeout"] = 1000;
+        }
+        else {
+            this[String(fn) + "-timeout"] = Math.floor(this[String(fn) + "-timeout"] * 1.25);
+        }
+        if (!this[String(fn) + "-attempts"]) {
+            this[String(fn) + "-attempts"] = 1;
+        }
+        else {
+            this[String(fn) + "-attempts"] += 1;
+        }
+    }
+
+    // Delay for the monitor
+    async sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    async sendTx() {
+        try {
+            let tx = await this.wallet().Transaction.sendTx(this.changeAddress.get()["address"], this.changeAddress.get()["bnCurve"]);
+            await this.backOffRetry('sendTx', true);
+            this.pendingTx.set(tx);
+            store.dispatch({ type: TRANSACTION_ACTION_TYPES.SET_LAST_SENT_TX_HASH, payload: tx });
+            await this.pendingTxStatus.set("Pending TxHash: " + this.trimTxHash(tx));
+            await this.wallet().Transaction._reset();
+            // Clear any TXOuts on a successful mine
+            this.txOuts.set([]);
+            return await this.monitorPending();
+        } catch (ex) {
+            if (!this['sendTx-attempts']) {
+                // Only overwrite error on first attempt
+                this.errors['sendTx'] = ex;
+            }
+            await this.backOffRetry('sendTx');
+            if (this['sendTx-attempts'] > 2) {
+                // Clear txOuts on a final fail
+                this.txOuts.set([]);
+                this.changeAddress.set({});
+                await this.wallet().Transaction._reset();
+                await this.backOffRetry('sendTx', true);
+                return { error: this.errors['sendTx'].message };
+            }
+            await this.sleep(this['sendTx-timeout']);
+            return await this.sendTx();
+        }
+    }
 }
 
 const madNetAdapter = new MadNetAdapter();
