@@ -1,6 +1,6 @@
 import React from 'react';
 
-const defaultState = {
+export const defaultState = {
     connected: false,
     busy: false,
     error: false,

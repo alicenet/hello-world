@@ -4,6 +4,7 @@
 const lightCodeTheme = require('prism-react-renderer/themes/github');
 const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
+
 /** @type {import('@docusaurus/types').Config} */
 const config = {
     title: 'alice.net - hello alice',
@@ -16,8 +17,8 @@ const config = {
     organizationName: 'MadBase', // Usually your GitHub org/user name.
     projectName: 'madnet-hello-world', // Usually your repo name.
     plugins: [
-        require.resolve('./sitePlugin'),
-        'docusaurus-tailwindcss'
+        // 'docusaurus-tailwindcss',
+        require.resolve('./plugin/index.js'),
     ],
 
     presets: [
