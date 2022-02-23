@@ -90,7 +90,7 @@ export function TransactionsList(){
                                     <Button
                                         color={fees.errors?.length > 0 ? "red" : "teal"}
                                         content="Send Transaction"
-                                        //disabled={_.isEmpty(list) || fees.errors?.length > 0}
+                                        disabled={_.isEmpty(list) || fees.errors?.length > 0}
                                         onClick={handleSendTransaction}
                                         className="m-0"
                                     />
