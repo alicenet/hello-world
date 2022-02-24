@@ -9,7 +9,7 @@ import { GenerateBurnerAccount } from '../components/wallet/Forms/GenerateBurner
 
 const Playground = () => {
 
-    const [step, setStep] = React.useState(1);
+    const [step, setStep] = React.useState(0);
     const gotoStep = (stepNum) => { setStep(stepNum); }
     const nextStep = () => { setStep(s => s + 1); }
     const ctx = React.useContext(MadContext);
