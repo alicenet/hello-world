@@ -235,10 +235,6 @@ function StoreData() {
     /**
      * This form is going to be for storing and reading a piece of data
      * Give the user two horizontal inputs for index and value, we will only store it for 1 epoch so no duration
-     * The value input should have an action on right right side that says "WRITE" to initiate the storage TX
-     * 
-     * Additionally provide an input below these inputs that says "READ" with an action button to the left
-     * When clicked READ should read the index provided in the space above
      * 
      * Make sure that a user takes the proper steps and is restricted down a pipeline to the following actions:
      * 
