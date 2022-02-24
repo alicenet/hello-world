@@ -3,7 +3,8 @@ import { Button, Container, Grid, Icon, Popup, Message } from 'semantic-ui-react
 import { useSelector, useDispatch } from 'react-redux';
 import utils from 'utils';
 import _ from 'lodash';
-import { ADAPTER_ACTIONS } from 'redux/actions';
+import { ADAPTER_ACTIONS, TRANSACTION_ACTIONS } from 'redux/actions';
+import { TransactionRow } from './TransactionRow';
 
 export function TransactionsList(){
     const { list, fees } = useSelector(state => ({
@@ -13,22 +14,10 @@ export function TransactionsList(){
 
     const dispatch = useDispatch();
 
-    const getTxType = (type) => {
-        switch(type){
-            case utils.transaction.transactionTypes.DATA_STORE:
-                return 'Data Store'
-            case utils.transaction.transactionTypes.VALUE_STORE:
-                return 'Value Store'
-            default: 
-                return 'N/A'
-        }
-    }
 
-    const TransactionRow = ( { row } ) => {
-        const { duration, from, key, type, value } = row;
-        const txType = getTxType(type);
-        return <div> <b>Type:</b> {txType} <b>From:</b> {from} {type === utils.transaction.transactionTypes.DATA_STORE && <><b>Key:</b>{key}</>} <b>Value:</b> {value} {type === utils.transaction.transactionTypes.DATA_STORE && <><b>Duration:</b>{duration}</>} </div>
-    }
+    const handleDelete = (index) => {
+        dispatch(TRANSACTION_ACTIONS.removeItem(index));
+    };
 
     const handleSendTransaction = async () => {
         // Send the TX via the main tx action -- Just fire it off, latest TX will appear in transaction reducer as lastSentAndMinedTx
@@ -68,7 +57,7 @@ export function TransactionsList(){
     return <div>
                 <div>{list.length === 0 && <div>No transactions</div>}</div>
                 <div className="mb-10">
-                    {list.map(t => <TransactionRow row={t} key={_.uniqueId()}/>)}
+                    {list.map((t, index) => <TransactionRow row={t} index={index} key={_.uniqueId()} onClick={handleDelete}/>)}
                 </div>
                 {list.length > 0 &&
                     <div>
