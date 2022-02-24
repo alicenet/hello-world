@@ -164,8 +164,8 @@ let madNetAdapter = new MadNetAdapter();
  * @returns 
  */
 export const useMadNetAdapter = (context) => {
-    // madNetAdapter.updateContext(context);
-    return 'test';
+    madNetAdapter.updateContext(context);
+    return madNetAdapter;
 }
 
 export default madNetAdapter;

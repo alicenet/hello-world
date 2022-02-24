@@ -1,42 +1,29 @@
 import React from 'react';
 import { useState } from 'react';
 import { Button } from 'semantic-ui-react';
-import { MadContext } from '../../../context/MadWalletContext';
-import madAdapter from '../../../adapter/MadNetAdapter';
-// import { WALLET_ACTIONS } from 'redux/actions';
-// import { useSelector, useDispatch } from 'react-redux';
+import { MadContext, addAddressToAccounts } from '../../../context/MadWalletContext';
+import { useMadNetAdapter } from '../../../adapter/MadNetAdapter';
 
-export function GenerateBurnerAccount({ color, content }) {
+/**
+ * Generate a tempory account for application use
+ * @returns 
+ */
+export function GenerateBurnerAccount({ color, content, disabled }) {
 
-    const [address, setAddress] = useState('');
-
-    // const madAdapterContext = React.useContext(MadContext);
-    // const madNetAdapter = useMadNetAdapter(madAdapterContext);
-
-    console.log(madAdapter)
-
-    // const dispatch = useDispatch();
-    // const { wallets } = useSelector(state => ({ wallets: state.wallet.wallets }))
+    const madAdapterContext = React.useContext(MadContext);
+    const madNetAdapter = useMadNetAdapter(madAdapterContext);
 
     const createBurnerAccount = async () => {
         let pRaw = new Date().valueOf();
-        let hash = await madAdapter.getMadNetWalletInstance().Utils.hash("0x" + pRaw.toString());
-        await madAdapter.getMadNetWalletInstance().Account.addAccount(hash);
-        const newAddress = madAdapter.getMadNetWalletInstance().Account.accounts[madAdapter.getMadNetWalletInstance().Account.accounts.length - 1].address;
-        setAddress(newAddress);
-        // dispatch(WALLET_ACTIONS.addWallet(newAddress));
-    }
-
-    const removeAccount = async (wallet) => {
-        await madAdapter.getMadNetWalletInstance().Account.removeAccount(wallet);
-        setAddress('');
-        // dispatch(WALLET_ACTIONS.removeWallet(wallet));
+        let hash = await madNetAdapter.getMadNetWalletInstance().Utils.hash("0x" + pRaw.toString());
+        await madNetAdapter.getMadNetWalletInstance().Account.addAccount(hash);
+        const newAddress = madNetAdapter.getMadNetWalletInstance().Account.accounts[madNetAdapter.getMadNetWalletInstance().Account.accounts.length - 1].address;
+        addAddressToAccounts(madAdapterContext, newAddress);
     }
 
     return <div className="text-center">
         {/* {wallets.map(wallet => <div>{wallet} <span className="cursor-pointer text-red-500" onClick={() => removeAccount(wallet)}>Remove</span></div>)} */}
-        <Button color={color} content={content ? content : "Generate Burner Wallet"} size="small" basic onClick={createBurnerAccount} />
-        <div>{address ? `Created account: ${address}` : ''}</div>
+        <Button color={color} disabled={disabled} content={content ? content : "Generate Burner Wallet"} size="small" basic onClick={createBurnerAccount} />
     </div>
 
 }
