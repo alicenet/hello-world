@@ -2,30 +2,27 @@ import MadWallet from 'madnetjs';
 import { defaultState } from '../context/MadWalletContext';
 
 //TODO add to env because no CRA
-const REACT_APP__ETHEREUM_PROVIDER="http://bubscorp.duckdns.org:20000/"
-const REACT_APP__MAD_NET_CHAINID="66"
-const REACT_APP__MAD_NET_PROVIDER="http://bubscorp.duckdns.org:20001/v1/"
+const REACT_APP__ETHEREUM_PROVIDER="http://catmad.duckdns.org:20001/"
+const REACT_APP__MAD_NET_PROVIDER="http://catmad.duckdns.org:20000/v1/"
 const REACT_APP__REGISTRY_CONTRACT_ADDRESS="0x0b1f9c2b7bed6db83295c7b5158e3806d67ec"
 
 export const initialConfigurationState = {
     ethereum_provider: REACT_APP__ETHEREUM_PROVIDER, // Ethereum RPC endpoint
-    mad_net_chainID: REACT_APP__MAD_NET_CHAINID, // Chain ID to use on MadNet
     mad_net_provider: REACT_APP__MAD_NET_PROVIDER, // MadNet API endpoint
     registry_contract_address: REACT_APP__REGISTRY_CONTRACT_ADDRESS, // Contract address for Registry Contract
     advanced_settings: false,
 }
 
 
-let madWallet = new MadWallet();
+let madWallet = new MadWallet(false, initialConfigurationState.mad_net_provider);
 
 class MadNetAdapter {
 
     constructor() {
-
+        
         this.wallet = () => madWallet; // Get latest madWallet for any actions needing it.
-        this.provider = () => initialConfigurationState.mad_net_provider;
-        this.chainID = () => initialConfigurationState.mad_net_chainID;
-
+        this.provider = initialConfigurationState.mad_net_provider;
+        
         this.context = null;
 
         this.connected = this._handleContextValue(["connected"]);
@@ -74,6 +71,8 @@ class MadNetAdapter {
         this.fees = this._handleContextValue(["fees"]);
         this.fees.set({});
 
+        this.__init();
+
     }
 
     /**
@@ -87,20 +86,12 @@ class MadNetAdapter {
         return this.wallet();
     }
 
-    _updateLastNotedConfig(mad_net_chainID = this.chainID(), mad_net_provider = this.provider()) {
-        this.lastNotedConfig = {
-            mad_net_chainID: mad_net_chainID,
-            mad_net_provider: mad_net_provider,
-        }
-    }
-
     /**
      * Initiate the madNet Adapter and verify a connection is possible
      */
     async __init(config = {}) {
         try {
-            this._updateLastNotedConfig();
-            await this.wallet().Rpc.setProvider(this.provider())
+            await this.wallet().Rpc.setProvider(this.provider)
             this.connected.set(true);
             this.failed.set(false);
             // Attempt to get fees -- RPC will throw if unfetchable
@@ -112,8 +103,10 @@ class MadNetAdapter {
                 minTxFee: fees.MinTxFee,
                 valueStoreFee: fees.ValueStoreFee
             });
+            console.log(fees);
             return { success: true }
         } catch (ex) {
+            console.error(ex);
             this.failed.set(ex.message);
             return ({ error: ex })
         }

@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 import { Button, Form, Grid, Header, Icon } from 'semantic-ui-react';
-import BigInt from 'big-integer';
 import { useFormState } from '../../hooks';
 import madNetAdapter from '../../adapter/MadNetAdapter';
 import { MadContext } from '../../context/MadWalletContext';
+import { ethers } from 'ethers';
 
 export function AddValueForm({ onSendValue }) {
 
@@ -28,7 +28,7 @@ export function AddValueForm({ onSendValue }) {
         }));*/
     };
 
-    const printableFee = BigInt(fees.valueStoreFee).toString();
+    const printableFee = fees.valueStoreFee ? ethers.BigNumber.from(fees.valueStoreFee).toString() : "0";
 
 
     return (
