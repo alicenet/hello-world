@@ -6,6 +6,7 @@ import { fundAddress } from '../api/api';
 
 import { MadContext, MadProvider, updateBalance } from '../context/MadWalletContext';
 import { GenerateBurnerAccount } from '../components/wallet/Forms/GenerateBurnerAccount';
+import { AddValueForm } from '../components/transaction/AddValueForm';
 
 const Playground = () => {
 
@@ -202,9 +203,6 @@ function SendValue({ nextStep, hasSentValueTx, markHasSentValue }) {
     // the following address: 01527b9166b4e323384a536996e84f572bab62a0
     // Additionally we should show the address and balance of both wallets participating in this transaction
     // See whiteboarding image from Adam
-    const TransactionForm = () => {
-        return "TX_FORM"
-    }
 
     const sendValue = () => {
         // Send the value TX here then call markHasSentValue
@@ -218,7 +216,7 @@ function SendValue({ nextStep, hasSentValueTx, markHasSentValue }) {
             For this example we'll send 100 tokens to a pre-determined address <br />
             After the transaction we'll poll for the demo wallet's balance and the receiver's address<br /> <br />
             <div style={{ marginTop: "1rem" }}>
-                <TransactionForm />
+                <AddValueForm onSendValue={sendValue}/>
             </div>
             <div className={styles.buttonWrap}>
                 <Button small color={hasSentValueTx ? "green" : "orange"} onClick={nextStep} disabled={!hasSentValueTx}
