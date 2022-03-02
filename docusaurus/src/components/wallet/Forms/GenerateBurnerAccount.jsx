@@ -15,7 +15,6 @@ export function GenerateBurnerAccount({ color, content, disabled }) {
 
     const createBurnerAccount = async () => {
         let pRaw = new Date().valueOf();
-        await madNetAdapter.__init();
         let hash = await madNetAdapter.getMadNetWalletInstance().Utils.hash("0x" + pRaw.toString());
         await madNetAdapter.getMadNetWalletInstance().Account.addAccount(hash);
         const newAddress = madNetAdapter.getMadNetWalletInstance().Account.accounts[madNetAdapter.getMadNetWalletInstance().Account.accounts.length - 1].address;

@@ -6,6 +6,10 @@ const REACT_APP__ETHEREUM_PROVIDER="http://catmad.duckdns.org:20001/"
 const REACT_APP__MAD_NET_PROVIDER="http://catmad.duckdns.org:20000/v1/"
 const REACT_APP__REGISTRY_CONTRACT_ADDRESS="0x0b1f9c2b7bed6db83295c7b5158e3806d67ec"
 
+const SECP256K1 = 1;
+const VALUE_STORE = 2;
+const DATA_STORE = 1;
+
 export const initialConfigurationState = {
     ethereum_provider: REACT_APP__ETHEREUM_PROVIDER, // Ethereum RPC endpoint
     mad_net_provider: REACT_APP__MAD_NET_PROVIDER, // MadNet API endpoint
@@ -71,6 +75,8 @@ class MadNetAdapter {
         this.fees = this._handleContextValue(["fees"]);
         this.fees.set({});
 
+        this.errors = {};
+
         this.__init();
 
     }
@@ -92,8 +98,6 @@ class MadNetAdapter {
     async __init(config = {}) {
         try {
             await this.wallet().Rpc.setProvider(this.provider)
-            this.connected.set(true);
-            this.failed.set(false);
             // Attempt to get fees -- RPC will throw if unfetchable
             let fees = await this.wallet().Rpc.getFees();
             // Re-assign to internal camelCase keys
@@ -103,17 +107,69 @@ class MadNetAdapter {
                 minTxFee: fees.MinTxFee,
                 valueStoreFee: fees.ValueStoreFee
             });
-            console.log(fees);
             return { success: true }
         } catch (ex) {
             console.error(ex);
-            this.failed.set(ex.message);
             return ({ error: ex })
         }
     }
 
     /**
-     * Return a getter/setter for a specific redux state value keyChain -- Object depth of max 3 supported
+     * Returns mad wallet balance and utxoids for respective address and curve
+     * @param address - Wallet address to look up the balance for
+     * @param curve - Address curve to use
+     */
+    async _getMadNetWalletBalanceAndUTXOs(address) {
+        let madWallet = this.wallet();
+        try {
+            let [utxoids, balance] = await madWallet.Rpc.getValueStoreUTXOIDs(address, SECP256K1);
+            balance = String(parseInt(balance, 16));
+            return [balance, utxoids];
+        } catch (ex) {
+            return [{ error: ex }, null]
+        }
+    }
+
+    async createAndsendTx(tx) {
+        try {
+            if(!tx) return
+
+            await this.wallet().Transaction.createTxFee(tx.from, tx.type, false);
+            if(tx.type === VALUE_STORE){
+                await this.wallet().Transaction.createValueStore(tx.from, tx.value, tx.to, SECP256K1);
+            }else if (tx.type === DATA_STORE) {
+                //TODO create data store
+                //await this.wallet().Transaction.createValueStore(tx.from, tx.value, tx.to, SECP256K1);
+            }
+            const pendingTransaction = await this.wallet().Transaction.sendTx();
+            await this.wallet().Transaction._reset();
+            return await this.monitorPending(pendingTransaction);
+        } catch (ex) {
+            console.log(ex)
+        }
+    }
+
+    // Monitor the pending transaction the was sent
+    async monitorPending(tx) {
+        try {
+            let txDetails = await this.wallet().Rpc.getMinedTransaction(tx);
+            // Success TX Mine
+            return { "txDetails": txDetails.Tx, "txHash": tx, "msg": "Mined: " + this.trimTxHash(tx) };
+        } catch (ex) {
+            console.log(ex)
+        }
+    }
+
+    trimTxHash(txHash) {
+        try {
+            return "0x" + txHash.substring(0, 6) + "..." + txHash.substring(txHash.length - 6);
+        } catch (ex) {
+            throw String(ex);
+        }
+    }
+
+    /**
+     * Return a getter/setter for a specific state value keyChain -- Object depth of max 3 supported
      * @prop {Array} keyChain - An array of nested keys to access the desired value
      * */
     _handleContextValue(keyChain) {
@@ -149,8 +205,6 @@ class MadNetAdapter {
         }; // If no context exists, don't provide setters
         return { get: getter, set: setter };
     }
-
-
 }
 
 

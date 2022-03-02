@@ -7,6 +7,7 @@ import { fundAddress } from '../api/api';
 import { MadContext, MadProvider, updateBalance } from '../context/MadWalletContext';
 import { GenerateBurnerAccount } from '../components/wallet/Forms/GenerateBurnerAccount';
 import { AddValueForm } from '../components/transaction/AddValueForm';
+import { useMadNetAdapter } from '../adapter/MadNetAdapter';
 
 const Playground = () => {
 
@@ -136,6 +137,8 @@ function GenerateWallet({ nextStep }) {
 function FundWallet({ nextStep }) {
 
     const ctx = React.useContext(MadContext)
+    const madNetAdapter = useMadNetAdapter(ctx);
+
     const { address, balance } = {
         address: ctx.state.accounts[0],
         balance: ctx.state.tokenBalances[ctx.state.accounts[0]]
@@ -153,9 +156,11 @@ function FundWallet({ nextStep }) {
         if (res.error) {
             // TODO: Handle error
         }
-        console.log(res);
         setLoading(false);
-        updateBalance(ctx, address, 2500);
+
+        let [balance] = await madNetAdapter._getMadNetWalletBalanceAndUTXOs(address);
+
+        updateBalance(ctx, address, balance);
     }
 
     const BalanceForm = () => {
