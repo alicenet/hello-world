@@ -25,7 +25,7 @@ export function AddValueForm({ onSendValue }) {
     const [error, setError] = useState('');
 
     const handleSubmit = async () => {
-        try{
+        try {
             setLoading(true);
             setError('');
             const tx = {
@@ -78,7 +78,6 @@ export function AddValueForm({ onSendValue }) {
                     <Grid.Row>
                         <Button
                             icon={<Icon name="currency"/>}
-                            className="m-0"
                             content={"Add Value Store"}
                             basic
                             color="teal"

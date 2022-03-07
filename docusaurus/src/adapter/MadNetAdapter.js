@@ -135,12 +135,13 @@ class MadNetAdapter {
             if(!tx) return
 
             await this.wallet().Transaction.createTxFee(tx.from, tx.type, false);
+
             if(tx.type === VALUE_STORE){
                 await this.wallet().Transaction.createValueStore(tx.from, tx.value, tx.to, SECP256K1);
             }else if (tx.type === DATA_STORE) {
-                //TODO create data store
-                //await this.wallet().Transaction.createValueStore(tx.from, tx.value, tx.to, SECP256K1);
+                await this.wallet().Transaction.createDataStore(tx.from, tx.key, tx.duration, tx.value);
             }
+
             const pendingTransaction = await this.wallet().Transaction.sendTx();
             await this.wallet().Transaction._reset();
             return await this.monitorPending(pendingTransaction);
@@ -166,6 +167,48 @@ class MadNetAdapter {
         } catch (ex) {
             throw String(ex);
         }
+    }
+
+    async parseDsLinkers(dsLinkers) {
+        let data = [];
+
+        try {
+
+            for (let i = 0; i < dsLinkers.length; i++) {
+
+                let dsL = dsLinkers[i];
+
+                // Remove leading zeroes and mark as hex
+                let deposit = "0x" + dsL["DSLinker"]["DSPreImage"].Deposit.replace(/^0+/, '');
+
+                let epochNums = await this.wallet().Utils.calculateNumEpochs(
+                    dsL["DSLinker"]["DSPreImage"].RawData.length % 2,
+                    deposit
+                )
+
+                let expiry = dsL["DSLinker"]["DSPreImage"].IssuedAt + parseInt(epochNums.toString());
+
+                data.push({
+                    type: "DataStore",
+                    owner: dsL["DSLinker"]["DSPreImage"].Owner,
+                    chain_id: dsL["DSLinker"]["DSPreImage"].ChainID,
+                    fee: dsL["DSLinker"]["DSPreImage"].Fee,
+                    deposit: dsL["DSLinker"]["DSPreImage"].Deposit,
+                    expiry: expiry,
+                    tx_out_idx: dsL["DSLinker"]["DSPreImage"].TXOutIdx || "0",
+                    index: dsL["DSLinker"]["DSPreImage"].Index || "0",
+                    value: dsL["DSLinker"]["DSPreImage"].RawData,
+                    issued: dsL["DSLinker"]["DSPreImage"].IssuedAt,
+                    txHash: dsL["DSLinker"].TxHash,
+                })
+            }
+
+        } catch (ex) {
+            return { error: "Error parsing DSLinkers: " + ex }
+        }
+
+        return data;
+
     }
 
     /**
@@ -206,7 +249,6 @@ class MadNetAdapter {
         return { get: getter, set: setter };
     }
 }
-
 
 let madNetAdapter = new MadNetAdapter();
 

@@ -1,5 +1,4 @@
 import React from 'react';
-import { useState } from 'react';
 import { Button } from 'semantic-ui-react';
 import { MadContext, addAddressToAccounts } from '../../../context/MadWalletContext';
 import { useMadNetAdapter } from '../../../adapter/MadNetAdapter';
@@ -21,8 +20,7 @@ export function GenerateBurnerAccount({ color, content, disabled }) {
         addAddressToAccounts(madAdapterContext, newAddress);
     }
 
-    return <div className="text-center">
-        {/* {wallets.map(wallet => <div>{wallet} <span className="cursor-pointer text-red-500" onClick={() => removeAccount(wallet)}>Remove</span></div>)} */}
+    return <div>
         <Button color={color} disabled={disabled} content={content ? content : "Generate Burner Wallet"} size="small" basic onClick={createBurnerAccount} />
     </div>
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Button, Grid, Header, Segment, Step, Container, Icon } from 'semantic-ui-react';
 import Layout from '@theme/Layout';
 import styles from './quickstart.module.css';
@@ -6,21 +6,21 @@ import { fundAddress } from '../api/api';
 
 import { MadContext, MadProvider, updateBalance } from '../context/MadWalletContext';
 import { GenerateBurnerAccount } from '../components/wallet/Forms/GenerateBurnerAccount';
-import { AddValueForm } from '../components/transaction/AddValueForm';
+import { AddValueForm, AddDataStoreForm } from '../components/transaction';
 import { useMadNetAdapter } from '../adapter/MadNetAdapter';
 
 const Playground = () => {
 
-    const [step, setStep] = React.useState(0);
+    const [step, setStep] = useState(0);
     const gotoStep = (stepNum) => { setStep(stepNum); }
     const nextStep = () => { setStep(s => s + 1); }
-    const ctx = React.useContext(MadContext);
+    const ctx = useContext(MadContext);
 
     const { wallets, tokenBalances } = { wallets: ctx.state.accounts, tokenBalances: ctx.state.tokenBalances }
 
     const hasWalletSetup = wallets.length > 0;
     const hasSufficientBalance = tokenBalances[wallets[0]] && tokenBalances[wallets[0]] > 2000;
-    const [hasSentValueTx, setHasSentValueTx] = React.useState(false);
+    const [hasSentValueTx, setHasSentValueTx] = useState(false);
 
     const getStepContent = (props) => {
         switch (step) {
@@ -104,7 +104,7 @@ function GettingStarted({ nextStep }) {
 
 function GenerateWallet({ nextStep }) {
 
-    const wallets = React.useContext(MadContext).state.accounts;
+    const wallets = useContext(MadContext).state.accounts;
 
     return (
         <div>
@@ -136,7 +136,7 @@ function GenerateWallet({ nextStep }) {
 
 function FundWallet({ nextStep }) {
 
-    const ctx = React.useContext(MadContext)
+    const ctx = useContext(MadContext)
     const madNetAdapter = useMadNetAdapter(ctx);
 
     const { address, balance } = {
@@ -144,9 +144,9 @@ function FundWallet({ nextStep }) {
         balance: ctx.state.tokenBalances[ctx.state.accounts[0]]
     };
 
-    const [loading, setLoading] = React.useState(false);
+    const [loading, setLoading] = useState(false);
 
-    React.useEffect(() => {
+    useEffect(() => {
         updateBalance(ctx, address);
     }, []);
 
@@ -154,13 +154,14 @@ function FundWallet({ nextStep }) {
         setLoading(true);
         let res = await fundAddress(address);
         if (res.error) {
-            // TODO: Handle error
+            console.log(res.error)
         }
-        setLoading(false);
 
         let [balance] = await madNetAdapter._getMadNetWalletBalanceAndUTXOs(address);
 
         updateBalance(ctx, address, balance);
+
+        setLoading(false);
     }
 
     const BalanceForm = () => {
@@ -210,7 +211,6 @@ function SendValue({ nextStep, hasSentValueTx, markHasSentValue }) {
     // See whiteboarding image from Adam
 
     const sendValue = () => {
-        // Send the value TX here then call markHasSentValue
         markHasSentValue();
     }
 
@@ -250,24 +250,17 @@ function StoreData() {
 
     return (
         <div>
-            <Header content="Fund generated address" /> <br />
-            Before you can do anything, we need to get some BOBB tokens. <br />
-            Luckily, for this demo we can do that easily by pressing the button below. <br /> <br />
-            Outside of this demo, tokens would normally be swapped for on Ethereum. <br />
+            <Header content="Data store transaction" /> <br />
+            This form is going to be for storing and reading a piece of data. <br />
+            After that, you will be able to read the data from the chain using the form with the "Read Value At Index" field <br />
             <div style={{ marginTop: "1rem" }}>
-                <BalanceForm />
-            </div>
-            <div className={styles.buttonWrap}>
-                <Button small color={balance > 2000 ? "green" : "orange"} onClick={nextStep} disabled={!balance || balance < 2000}
-                    content={balance > 2000 ? "Continue" : "Insufficient funds"}
-                    labelPosition="right" icon={balance < 2000 ? "x" : "arrow right"} floated='right' />
+                <AddDataStoreForm/>
             </div>
         </div>
     )
 }
 
 export default function () {
-
 
     return (
         <Layout>
