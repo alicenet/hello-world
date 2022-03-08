@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Button, Form, Grid, Icon } from 'semantic-ui-react';
 import { useFormState } from '../../hooks';
-import { MadContext, updateBalance, addAddressToAccounts } from '../../context/MadWalletContext';
+import { MadContext, updateBalance } from '../../context/MadWalletContext';
 import { useMadNetAdapter } from '../../adapter/MadNetAdapter';
 import utils from '../../utils';
 
@@ -35,6 +35,7 @@ export function AddDataStoreForm() {
         try {
             setSuccess(false);
             setLoading(true);
+            setError('');
 
             const tx = {
                 from: formState.From.value,
@@ -62,15 +63,14 @@ export function AddDataStoreForm() {
 
     const handleReadData = async () => {
         try {
+            setError('');
             setLoading(true);
-            let UTXOIDS = await madNetAdapter.getMadNetWalletInstance().Rpc.getDataStoreUTXOIDs(wallets[0], CURVE_TYPE, MAX_UTXOS, undefined)         
-            let DStores = await madNetAdapter.getMadNetWalletInstance().Rpc.getUTXOsByIds([UTXOIDS[0].UTXOID]);
-            let dStores = DStores[0];
-            // Extract data from stores
-            dStores = await madNetAdapter.parseDsLinkers(dStores);
-            const valueFinal = utils.hash.hexToUtf8Str(dStores[0].value);
-            setStoredData(valueFinal);
+
+            let UTXOIDS = await madNetAdapter.getMadNetWalletInstance().Rpc.getDataStoreUTXOIDs(wallets[0], CURVE_TYPE, MAX_UTXOS, undefined)  
+            let storedData = await madNetAdapter.getMadNetWalletInstance().Rpc.getDataStoreByIndex(wallets[0], CURVE_TYPE, UTXOIDS[0].index);
+            setStoredData(utils.hash.hexToUtf8Str(storedData.DSLinker.DSPreImage.RawData));
             setLoading(false);
+            
         }catch (exception) {
             console.log(exception)
             setLoading(false);
@@ -93,13 +93,13 @@ export function AddDataStoreForm() {
                         </div>
                     </Grid.Row>
 
-                    <Grid.Row columns={2}>
+                    <Grid.Row columns={4}>
 
                         <Grid.Column>
 
                             <Form.Input
                                 id='Key'
-                                label={<div>Key:</div>}
+                                label={<div>Index:</div>}
                                 required
                                 value={formState.Key.value}
                                 onChange={e => formSetter.setKey(e.target.value)}
@@ -125,39 +125,58 @@ export function AddDataStoreForm() {
 
                     </Grid.Row>
 
+                    
+                    <Grid.Row columns={4}>
+
+                        <Grid.Column>
+                            <Button
+                                icon={<Icon name='chart bar' />}
+                                content={"Read value at index"}
+                                basic
+                                color="green"
+                                onClick={handleReadData}
+                                loading={loading}
+                                disabled={!success}
+                                style={{ width: '100%' }}
+                            />
+                        </Grid.Column>
+
+                        <Grid.Column>
+                            <Button
+                                icon={<Icon name='chart bar' />}
+                                content={"Write value at index"}
+                                basic
+                                color="teal"
+                                onClick={handleSubmit}
+                                loading={loading}
+                                style={{ width: '100%' }}
+                            />
+                        </Grid.Column>
+
+                    </Grid.Row>
+
+                    <Grid.Row columns={1}>
+
+                        <Grid.Column>
+                            <Form.Input
+                                id='Value'
+                                required
+                                placeholder='Read value output'
+                                value={storedData}
+                                disabled
+                                style={{ width: '50%' }}
+                            />
+                        </Grid.Column>
+
+                    </Grid.Row>
+
                 </Grid>
 
             </div>
 
-            <div>
-                {success && 
-                    <Button
-                        icon={<Icon name='chart bar' />}
-                        content={"Read value at index"}
-                        basic
-                        color="green"
-                        onClick={handleReadData}
-                        loading={loading}
-                    />
-                }
-                <Button
-                    icon={<Icon name='chart bar' />}
-                    content={"Write value at index"}
-                    basic
-                    color="teal"
-                    onClick={handleSubmit}
-                    loading={loading}
-                />
-
-            </div>
-
-            {storedData && <div><b>Read Value Output:</b> {storedData}</div>}
-
             <div>{success && <div>Data Store added</div>}</div>
 
-            <div>
-                {error && 'There was a problem during the transaction'}
-            </div>
+            <div>{error && 'There was a problem during the transaction'}</div>
 
         </div>
     )

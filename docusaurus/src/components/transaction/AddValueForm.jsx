@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Button, Form, Grid, Icon } from 'semantic-ui-react';
+import { Button, Form, Grid, Icon, Popup } from 'semantic-ui-react';
 import { useFormState } from '../../hooks';
 import { MadContext, updateBalance } from '../../context/MadWalletContext';
 import { useMadNetAdapter } from '../../adapter/MadNetAdapter';
@@ -24,6 +24,13 @@ export function AddValueForm({ onSendValue }) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
+    const updateBalances = async () => {
+        let [balanceFrom] = await madNetAdapter._getMadNetWalletBalanceAndUTXOs(formState.From.value);
+        let [balanceTo] = await madNetAdapter._getMadNetWalletBalanceAndUTXOs(DESTINATION_WALLET);
+        updateBalance(madAdapterContext, formState.From.value, balanceFrom);
+        updateBalance(madAdapterContext, DESTINATION_WALLET, balanceTo);
+    }
+
     const handleSubmit = async () => {
         try {
             setLoading(true);
@@ -36,18 +43,11 @@ export function AddValueForm({ onSendValue }) {
             }
             await madNetAdapter.createAndsendTx(tx);
             await madNetAdapter.monitorPending();
-
-            let [balanceFrom] = await madNetAdapter._getMadNetWalletBalanceAndUTXOs(formState.From.value);
-            let [balanceTo] = await madNetAdapter._getMadNetWalletBalanceAndUTXOs(DESTINATION_WALLET);
-
-            updateBalance(madAdapterContext, formState.From.value, balanceFrom);
-
-            updateBalance(madAdapterContext, DESTINATION_WALLET, balanceTo);
-
             onSendValue();
+            await updateBalances();
             setLoading(false);
         }catch(exception){
-            console.log(exception)
+            await updateBalances();
             setLoading(false);
             setError(exception);
         }
@@ -68,21 +68,25 @@ export function AddValueForm({ onSendValue }) {
                     <Grid.Row>
                         <Form.Input
                             id='Value'
-                            label={<div>Value:</div>}
+                            action={
+                                <Popup
+                                    trigger={<Button
+                                        icon={<Icon name="currency"/>}
+                                        content={"Send Value"}
+                                        basic
+                                        color="teal"
+                                        onClick={(e) => handleSubmit(e)}
+                                        loading={loading}
+                                    />}
+                                    size="mini"
+                                    position="right center"
+                                    content="You may notice a deduction on the from account greater than the amount, this is due to the associated Transaction Fees, they are generally quite low for value transactions and should be around ~5-6 tokens at the moment."
+                                />
+                               }
                             required
                             value={formState.Value.value}
                             onChange={e => formSetter.setValue(e.target.value)}
                             error={!!formState.Value.error && { content: formState.Value.error }}
-                        />
-                    </Grid.Row>
-                    <Grid.Row>
-                        <Button
-                            icon={<Icon name="currency"/>}
-                            content={"Add Value Store"}
-                            basic
-                            color="teal"
-                            onClick={(e) => handleSubmit(e)}
-                            loading={loading}
                         />
                     </Grid.Row>
                     <Grid.Row><b>From:&nbsp;</b> {formState.From.value} <b>&nbsp;Balance:&nbsp;</b> {state.tokenBalances[formState.From.value]}</Grid.Row>
