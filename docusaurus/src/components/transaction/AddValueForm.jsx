@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Button, Form, Grid, Icon, Popup } from 'semantic-ui-react';
+import { Button, Form, Grid, Icon } from 'semantic-ui-react';
 import { useFormState } from '../../hooks';
 import { MadContext, updateBalance } from '../../context/MadWalletContext';
 import { useMadNetAdapter } from '../../adapter/MadNetAdapter';
@@ -69,18 +69,13 @@ export function AddValueForm({ onSendValue }) {
                         <Form.Input
                             id='Value'
                             action={
-                                <Popup
-                                    trigger={<Button
-                                        icon={<Icon name="currency"/>}
-                                        content={"Send Value"}
-                                        basic
-                                        color="teal"
-                                        onClick={(e) => handleSubmit(e)}
-                                        loading={loading}
-                                    />}
-                                    size="mini"
-                                    position="right center"
-                                    content="You may notice a deduction on the from account greater than the amount, this is due to the associated Transaction Fees, they are generally quite low for value transactions and should be around ~5-6 tokens at the moment."
+                                <Button
+                                    icon={<Icon name="currency"/>}
+                                    content={"Send Value"}
+                                    basic
+                                    color="teal"
+                                    onClick={(e) => handleSubmit(e)}
+                                    loading={loading}
                                 />
                                }
                             required
@@ -89,6 +84,7 @@ export function AddValueForm({ onSendValue }) {
                             error={!!formState.Value.error && { content: formState.Value.error }}
                         />
                     </Grid.Row>
+                    <Grid.Row><p>You may notice a deduction on the from account greater than the amount, this is due to the associated Transaction Fees, they are generally quite low for value transactions and should be around ~5-6 tokens at the moment.</p></Grid.Row>
                     <Grid.Row><b>From:&nbsp;</b> {formState.From.value} <b>&nbsp;Balance:&nbsp;</b> {state.tokenBalances[formState.From.value]}</Grid.Row>
                     <Grid.Row><b>To:&nbsp;</b> {formState.To.value} <b>&nbsp;Balance:&nbsp;</b> {state.tokenBalances[DESTINATION_WALLET] || '0'}</Grid.Row>
 
