@@ -19,7 +19,8 @@ export function AddDataStoreForm() {
     const state = madAdapterContext.state;
     const wallets = state.accounts;
 
-    const [loading, setLoading] = useState(false);
+    const [loadingWrite, setLoadingWrite] = useState(false);
+    const [loadingRead, setLoadingRead] = useState(false);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState('');
     const [storedData, setStoredData] = useState('');
@@ -31,10 +32,10 @@ export function AddDataStoreForm() {
         { name: 'Value', type: 'string', isRequired: true, value: DEFAULT_VALUE },
     ]);
 
-    const handleSubmit = async () => {
+    const handleSubmitWrite = async () => {
         try {
             setSuccess(false);
-            setLoading(true);
+            setLoadingWrite(true);
             setError('');
 
             const tx = {
@@ -52,10 +53,10 @@ export function AddDataStoreForm() {
             updateBalance(madAdapterContext, formState.From.value, balanceFrom);
 
             setSuccess(true);
-            setLoading(false);
+            setLoadingWrite(false);
         } catch(exception) {
             console.log(exception)
-            setLoading(false);
+            setLoadingWrite(false);
             setError(exception);
         }
         
@@ -64,16 +65,16 @@ export function AddDataStoreForm() {
     const handleReadData = async () => {
         try {
             setError('');
-            setLoading(true);
+            setLoadingRead(true);
 
             let UTXOIDS = await madNetAdapter.getMadNetWalletInstance().Rpc.getDataStoreUTXOIDs(wallets[0], CURVE_TYPE, MAX_UTXOS, undefined)  
             let storedData = await madNetAdapter.getMadNetWalletInstance().Rpc.getDataStoreByIndex(wallets[0], CURVE_TYPE, UTXOIDS[0].index);
             setStoredData(utils.hash.hexToUtf8Str(storedData.DSLinker.DSPreImage.RawData));
-            setLoading(false);
+            setLoadingRead(false);
             
         }catch (exception) {
             console.log(exception)
-            setLoading(false);
+            setLoadingRead(false);
             setError(exception);
         }
     }
@@ -135,8 +136,8 @@ export function AddDataStoreForm() {
                                 basic
                                 color="green"
                                 onClick={handleReadData}
-                                loading={loading}
-                                disabled={!success}
+                                loading={loadingRead}
+                                disabled={!success || loadingWrite}
                                 style={{ width: '100%' }}
                             />
                         </Grid.Column>
@@ -147,9 +148,10 @@ export function AddDataStoreForm() {
                                 content={"Write value at index"}
                                 basic
                                 color="teal"
-                                onClick={handleSubmit}
-                                loading={loading}
+                                onClick={handleSubmitWrite}
+                                loading={loadingWrite}
                                 style={{ width: '100%' }}
+                                disabled={loadingRead}
                             />
                         </Grid.Column>
 
