@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Button, Form, Grid, Icon } from 'semantic-ui-react';
+import { Button, Form, Grid, Icon, Message } from 'semantic-ui-react';
 import { useFormState } from '../../hooks';
 import { MadContext, updateBalance } from '../../context/MadWalletContext';
 import { useMadNetAdapter } from '../../adapter/MadNetAdapter';
@@ -183,7 +183,7 @@ export function AddDataStoreForm() {
 
             </div>
 
-            <div>{error && 'There was a problem during the transaction'}</div>
+            <div>{error && <Message error>There was a problem during the transaction</Message>}</div>
 
         </div>
     )

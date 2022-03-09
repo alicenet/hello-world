@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Button, Grid, Header, Segment, Step, Container, Icon } from 'semantic-ui-react';
+import { Button, Grid, Header, Segment, Step, Container, Icon, Message } from 'semantic-ui-react';
 import Layout from '@theme/Layout';
 import styles from './quickstart.module.css';
 import { fundAddress } from '../api/api';
@@ -136,8 +136,10 @@ function GenerateWallet({ nextStep }) {
 
 function FundWallet({ nextStep }) {
 
-    const ctx = useContext(MadContext)
+    const ctx = useContext(MadContext);
     const madNetAdapter = useMadNetAdapter(ctx);
+
+    const [error, setError] = useState('');
 
     const { address, balance } = {
         address: ctx.state.accounts[0],
@@ -147,21 +149,31 @@ function FundWallet({ nextStep }) {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        updateBalance(ctx, address);
-    }, []);
+        const loadBalance = async () => {
+            let [balance] = await madNetAdapter._getMadNetWalletBalanceAndUTXOs(address);
+            updateBalance(ctx, address, balance);
+        }
+        loadBalance();
+    }, [])
 
     const callApiForFunding = async () => {
         setLoading(true);
-        let res = await fundAddress(address);
-        if (res.error) {
-            console.log(res.error)
+        setError('');
+
+        try {
+            let res = await fundAddress(address);
+            if (res.error) {
+                setError(res.error);
+            }
+            let [balance] = await madNetAdapter._getMadNetWalletBalanceAndUTXOs(address);
+            updateBalance(ctx, address, balance);
+
+            setLoading(false);
+        } catch(exception){
+            setError(exception);
+            setLoading(false);
         }
-
-        let [balance] = await madNetAdapter._getMadNetWalletBalanceAndUTXOs(address);
-
-        updateBalance(ctx, address, balance);
-
-        setLoading(false);
+        
     }
 
     const BalanceForm = () => {
@@ -180,6 +192,8 @@ function FundWallet({ nextStep }) {
                 <div style={{ marginTop: "1rem", color: "grey" }}>
                     Current Balance: <strong>{balance} BOBB</strong>
                 </div>
+                <br />
+                <div>{error && <Message error>There was a problem during the transaction</Message>}</div>
             </Segment>
         )
     }
