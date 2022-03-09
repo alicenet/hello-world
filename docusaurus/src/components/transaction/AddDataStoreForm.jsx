@@ -25,6 +25,8 @@ export function AddDataStoreForm() {
     const [error, setError] = useState('');
     const [storedData, setStoredData] = useState('');
 
+    const [successButtonContent, setSuccessButtonContent] = useState(<> <Icon name='chart bar' />&nbsp;Write value at index</>);
+
     const [formState, formSetter] = useFormState([
         { name: 'From', display: 'From address', type: 'address', isRequired: true, value: wallets[0] },
         { name: 'Duration', type: 'integer', isRequired: true, value: DURATION },
@@ -51,6 +53,12 @@ export function AddDataStoreForm() {
             let [balanceFrom] = await madNetAdapter._getMadNetWalletBalanceAndUTXOs(formState.From.value);
 
             updateBalance(madAdapterContext, formState.From.value, balanceFrom);
+
+            setSuccessButtonContent(<><Icon name='thumbs up' color='teal'/>&nbsp;Success</>);
+
+            setTimeout(() => {
+                setSuccessButtonContent(<> <Icon name='chart bar'/>&nbsp;Write value at index</>);
+            }, 2000);
 
             setSuccess(true);
             setLoadingWrite(false);
@@ -131,7 +139,7 @@ export function AddDataStoreForm() {
 
                         <Grid.Column>
                             <Button
-                                icon={<Icon name='chart bar' />}
+                                icon={<Icon name='search' />}
                                 content={"Read value at index"}
                                 basic
                                 color="green"
@@ -144,8 +152,7 @@ export function AddDataStoreForm() {
 
                         <Grid.Column>
                             <Button
-                                icon={<Icon name='chart bar' />}
-                                content={"Write value at index"}
+                                content={successButtonContent}
                                 basic
                                 color="teal"
                                 onClick={handleSubmitWrite}
@@ -175,8 +182,6 @@ export function AddDataStoreForm() {
                 </Grid>
 
             </div>
-
-            <div>{success && <div>Data Store added</div>}</div>
 
             <div>{error && 'There was a problem during the transaction'}</div>
 

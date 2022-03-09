@@ -131,24 +131,20 @@ class MadNetAdapter {
     }
 
     async createAndsendTx(tx) {
-        try {
-            if(!tx) return
+        if(!tx) return
 
-            await this.wallet().Transaction.createTxFee(tx.from, tx.type, false);
+        await this.wallet().Transaction.createTxFee(tx.from, tx.type, false);
 
-            if(tx.type === VALUE_STORE){
-                await this.wallet().Transaction.createValueStore(tx.from, tx.value, tx.to, SECP256K1);
-            }else if (tx.type === DATA_STORE) {
-                await this.wallet().Transaction.createDataStore(tx.from, tx.key, tx.duration, tx.value);
-            }
-
-            const pendingTransaction = await this.wallet().Transaction.sendTx();
-            await this.wallet().Transaction._reset();
-            
-            return await this.monitorPending(pendingTransaction);
-        } catch (ex) {
-            console.log(ex)
+        if(tx.type === VALUE_STORE){
+            await this.wallet().Transaction.createValueStore(tx.from, tx.value, tx.to, SECP256K1);
+        }else if (tx.type === DATA_STORE) {
+            await this.wallet().Transaction.createDataStore(tx.from, tx.key, tx.duration, tx.value);
         }
+
+        const pendingTransaction = await this.wallet().Transaction.sendTx();
+        await this.wallet().Transaction._reset();
+        
+        return await this.monitorPending(pendingTransaction);
     }
 
     // Monitor the pending transaction the was sent
