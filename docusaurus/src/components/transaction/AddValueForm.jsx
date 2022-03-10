@@ -43,9 +43,12 @@ export function AddValueForm({ onSendValue }) {
                 type: VALUE_STORE,
             }
             await madNetAdapter.createAndsendTx(tx);
-            await updateBalances();
-            onSendValue();
-            setLoading(false);
+            setTimeout(async () => {
+                // Give the network a few seconds to catch up after the success
+                await updateBalances();
+                onSendValue();
+                setLoading(false);
+            }, 3000);
         }catch(exception) {
             setLoading(false);
             setError(exception);

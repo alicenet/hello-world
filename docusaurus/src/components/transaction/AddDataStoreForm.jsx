@@ -49,18 +49,23 @@ export function AddDataStoreForm() {
             }
             await madNetAdapter.createAndsendTx(tx);
 
-            let [balanceFrom] = await madNetAdapter._getMadNetWalletBalanceAndUTXOs(formState.From.value);
+            setTimeout(async () => {
+                // Give the network a few seconds to catch up after the success
+                let [balanceFrom] = await madNetAdapter._getMadNetWalletBalanceAndUTXOs(formState.From.value);
 
-            updateBalance(madAdapterContext, formState.From.value, balanceFrom);
+                updateBalance(madAdapterContext, formState.From.value, balanceFrom);
 
-            setSuccessButtonContent(<><Icon name='thumbs up' color='teal'/>&nbsp;Success</>);
+                setSuccessButtonContent(<><Icon name='thumbs up' color='teal'/>&nbsp;Success</>);
 
-            setTimeout(() => {
-                setSuccessButtonContent(<> <Icon name='chart bar'/>&nbsp;Write value at index</>);
-            }, 2000);
+                setTimeout(() => {
+                    setSuccessButtonContent(<> <Icon name='chart bar'/>&nbsp;Write value at index</>);
+                }, 2000);
 
-            setSuccess(true);
-            setLoadingWrite(false);
+                setSuccess(true);
+                setLoadingWrite(false);
+            }, 3000);
+
+            
         } catch(exception) {
             console.log(exception)
             setLoadingWrite(false);

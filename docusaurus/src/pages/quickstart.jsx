@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { Grid, Header, Segment, Step, Container, Icon } from 'semantic-ui-react';
 import Layout from '@theme/Layout';
 import { MadContext, MadProvider } from '../context/MadWalletContext';
-import { GettingStarted, GenerateWallet, FundWallet, SendValue } from './quickstart-steps';
+import { GettingStarted, GenerateWallet, FundWallet, SendValue, StoreData } from './quickstart-steps';
 
 const Playground = () => {
 
