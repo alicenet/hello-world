@@ -135,16 +135,26 @@ class MadNetAdapter {
 
         await this.wallet().Transaction.createTxFee(tx.from, tx.type, false);
 
-        if(tx.type === VALUE_STORE){
+        if(tx.type === VALUE_STORE) {
             await this.wallet().Transaction.createValueStore(tx.from, tx.value, tx.to, SECP256K1);
-        }else if (tx.type === DATA_STORE) {
+        } else if (tx.type === DATA_STORE) {
             await this.wallet().Transaction.createDataStore(tx.from, tx.key, tx.duration, tx.value);
         }
+        await this.sendTx();
+    }
 
-        const pendingTransaction = await this.wallet().Transaction.sendTx();
-        await this.wallet().Transaction._reset();
+    async sendTx() {
+        try {
+            
+            const pendingTransaction = await this.wallet().Transaction.sendTx();
+            await this.wallet().Transaction._reset();
+
+            return await this.monitorPending(pendingTransaction);
+        } catch(exception) {
+            await this.sleep(2000);
+            this.sendTx();
+        }
         
-        return await this.monitorPending(pendingTransaction);
     }
 
     // Monitor the pending transaction the was sent
@@ -155,6 +165,8 @@ class MadNetAdapter {
             return { "txDetails": txDetails.Tx, "txHash": tx, "msg": "Mined: " + this.trimTxHash(tx) };
         } catch (ex) {
             console.log(ex)
+            await this.sleep(2000);
+            this.monitorPending(tx);
         }
     }
 
@@ -164,6 +176,10 @@ class MadNetAdapter {
         } catch (ex) {
             throw String(ex);
         }
+    }
+
+    async sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
     }
 
     /**

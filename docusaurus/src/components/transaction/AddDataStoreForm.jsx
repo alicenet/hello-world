@@ -48,7 +48,6 @@ export function AddDataStoreForm() {
                 type: DATA_STORE,
             }
             await madNetAdapter.createAndsendTx(tx);
-            await madNetAdapter.monitorPending();
 
             let [balanceFrom] = await madNetAdapter._getMadNetWalletBalanceAndUTXOs(formState.From.value);
 

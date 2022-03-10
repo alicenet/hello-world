@@ -46,7 +46,7 @@ export function AddValueForm({ onSendValue }) {
             await updateBalances();
             onSendValue();
             setLoading(false);
-        }catch(exception){
+        }catch(exception) {
             setLoading(false);
             setError(exception);
         }
@@ -55,8 +55,12 @@ export function AddValueForm({ onSendValue }) {
     useEffect(() => {
         const loadBalances = async () => {
             let [balanceTo] = await madNetAdapter._getMadNetWalletBalanceAndUTXOs(DESTINATION_WALLET);
-            updateBalance(madAdapterContext, formState.From.value, state.tokenBalances[formState.From.value]);
             updateBalance(madAdapterContext, DESTINATION_WALLET, balanceTo);
+
+            if(!formState.From.value) return;
+            let [balanceFrom] = await madNetAdapter._getMadNetWalletBalanceAndUTXOs(formState.From.value);
+            updateBalance(madAdapterContext, formState.From.value, balanceFrom);
+            
         }
         loadBalances();
     }, [])
@@ -89,7 +93,7 @@ export function AddValueForm({ onSendValue }) {
                     <Grid.Row><b>From:&nbsp;</b> {formState.From.value} <b>&nbsp;Balance:&nbsp;</b> {state.tokenBalances[formState.From.value]}</Grid.Row>
                     <Grid.Row><b>To:&nbsp;</b> {formState.To.value} <b>&nbsp;Balance:&nbsp;</b> {state.tokenBalances[DESTINATION_WALLET] || '0'}</Grid.Row>
 
-                    <Grid.Row>{tokensSent && <Message success>Tokens already sent</Message>}</Grid.Row>
+                    <Grid.Row>{tokensSent && <Message success>Tokens have been sent</Message>}</Grid.Row>
                     <Grid.Row>{error && <Message error>There was a problem during the transaction</Message>}</Grid.Row>
                 </Grid>
             </div>
