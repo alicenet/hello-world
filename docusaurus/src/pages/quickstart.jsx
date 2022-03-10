@@ -3,8 +3,7 @@ import { Button, Grid, Header, Segment, Step, Container, Icon, Message } from 's
 import Layout from '@theme/Layout';
 import styles from './quickstart.module.css';
 import { fundAddress } from '../api/api';
-
-import { MadContext, MadProvider, updateBalance } from '../context/MadWalletContext';
+import { MadContext, MadProvider, updateBalance, updateTokensSentStatus } from '../context/MadWalletContext';
 import { GenerateBurnerAccount } from '../components/wallet/Forms/GenerateBurnerAccount';
 import { AddValueForm, AddDataStoreForm } from '../components/transaction';
 import { useMadNetAdapter } from '../adapter/MadNetAdapter';
@@ -16,18 +15,17 @@ const Playground = () => {
     const nextStep = () => { setStep(s => s + 1); }
     const ctx = useContext(MadContext);
 
-    const { wallets, tokenBalances } = { wallets: ctx.state.accounts, tokenBalances: ctx.state.tokenBalances }
+    const { wallets, tokenBalances, tokensSent } = { wallets: ctx.state.accounts, tokenBalances: ctx.state.tokenBalances, tokensSent: ctx.state.tokensSent }
 
     const hasWalletSetup = wallets.length > 0;
     const hasSufficientBalance = tokenBalances[wallets[0]] && tokenBalances[wallets[0]] > 2000;
-    const [hasSentValueTx, setHasSentValueTx] = useState(false);
 
     const getStepContent = (props) => {
         switch (step) {
             case 0: return <GettingStarted {...props} />;
             case 1: return <GenerateWallet {...props} />;
             case 2: return <FundWallet {...props} />;
-            case 3: return <SendValue {...props} hasSentValueTx={hasSentValueTx} markHasSentValue={() => setHasSentValueTx(true)}/>;
+            case 3: return <SendValue {...props} />;
             case 4: return <StoreData {...props} />;
         }
     }
@@ -67,7 +65,7 @@ const Playground = () => {
                         </Step.Content>
                     </Step>
 
-                    <Step active={step == 4} completed={false} disabled={!hasSentValueTx} onClick={() => gotoStep(4)}>
+                    <Step active={step == 4} completed={false} disabled={!tokensSent} onClick={() => gotoStep(4)}>
                         <Icon name="database" />
                         <Step.Content>
                             <Step.Title>Store Data</Step.Title>
@@ -217,15 +215,18 @@ function FundWallet({ nextStep }) {
 
 }
 
-function SendValue({ nextStep, hasSentValueTx, markHasSentValue }) {
+function SendValue({ nextStep }) {
 
     // TODO: This form should have a prefill input with amoung '100' to send a value store transaction to
     // the following address: 01527b9166b4e323384a536996e84f572bab62a0
     // Additionally we should show the address and balance of both wallets participating in this transaction
     // See whiteboarding image from Adam
+    const ctx = useContext(MadContext);
 
-    const sendValue = () => {
-        markHasSentValue();
+    const { tokensSent } = ctx.state;
+
+    const onSendValue = () => {
+        updateTokensSentStatus(ctx, true);
     }
 
     return (
@@ -235,12 +236,12 @@ function SendValue({ nextStep, hasSentValueTx, markHasSentValue }) {
             For this example we'll send 100 tokens to a pre-determined address <br />
             After the transaction we'll poll for the demo wallet's balance and the receiver's address<br /> <br />
             <div style={{ marginTop: "1rem" }}>
-                <AddValueForm onSendValue={sendValue}/>
+                <AddValueForm onSendValue={onSendValue}/>
             </div>
             <div className={styles.buttonWrap}>
-                <Button small color={hasSentValueTx ? "green" : "orange"} onClick={nextStep} disabled={!hasSentValueTx}
-                    content={hasSentValueTx ? "Continue" : "Send some tokens first"}
-                    labelPosition="right" icon={!hasSentValueTx ? "x" : "arrow right"} floated='right' />
+                <Button small color={tokensSent ? "green" : "orange"} onClick={nextStep} disabled={!tokensSent}
+                    content={tokensSent ? "Continue" : "Send some tokens first"}
+                    labelPosition="right" icon={!tokensSent ? "x" : "arrow right"} floated='right' />
             </div>
         </div>
     )

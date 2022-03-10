@@ -8,12 +8,13 @@ const DESTINATION_WALLET = '01527b9166b4e323384a536996e84f572bab62a0';
 const DEFAULT_VALUE = '100';
 const VALUE_STORE = 2;
 
-export function AddValueForm({ onSendValue }) {
+export function AddValueForm({ onSendValue }) {
 
     const madAdapterContext = useContext(MadContext);
     const madNetAdapter = useMadNetAdapter(madAdapterContext);
     const state = madAdapterContext.state;
     const wallets = state.accounts;
+    const tokensSent = state.tokensSent;
     
     const [formState, formSetter] = useFormState([
         { name: 'From', display: 'From address', type: 'address', isRequired: true, value: wallets[0] }, 
@@ -42,12 +43,10 @@ export function AddValueForm({ onSendValue }) {
                 type: VALUE_STORE,
             }
             await madNetAdapter.createAndsendTx(tx);
-            await madNetAdapter.monitorPending();
-            onSendValue();
             await updateBalances();
+            onSendValue();
             setLoading(false);
         }catch(exception){
-            await updateBalances();
             setLoading(false);
             setError(exception);
         }
@@ -76,6 +75,7 @@ export function AddValueForm({ onSendValue }) {
                                     color="teal"
                                     onClick={(e) => handleSubmit(e)}
                                     loading={loading}
+                                    disabled={tokensSent}
                                 />
                                }
                             required
@@ -89,6 +89,7 @@ export function AddValueForm({ onSendValue }) {
                     <Grid.Row><b>From:&nbsp;</b> {formState.From.value} <b>&nbsp;Balance:&nbsp;</b> {state.tokenBalances[formState.From.value]}</Grid.Row>
                     <Grid.Row><b>To:&nbsp;</b> {formState.To.value} <b>&nbsp;Balance:&nbsp;</b> {state.tokenBalances[DESTINATION_WALLET] || '0'}</Grid.Row>
 
+                    <Grid.Row>{tokensSent && <Message success>Tokens already sent</Message>}</Grid.Row>
                     <Grid.Row>{error && <Message error>There was a problem during the transaction</Message>}</Grid.Row>
                 </Grid>
             </div>

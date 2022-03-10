@@ -6,6 +6,7 @@ export const defaultState = {
     error: false,
     accounts: [],
     tokenBalances: {}, // K:V where K is address and v is tokenBalance
+    tokensSent: false,
     config: {
         mad_net_chainID: false, // Not needed
         mad_net_provider: "", // Testnet from env
@@ -47,6 +48,10 @@ export const updateBalance = (context, address, overrideAmt) => { // override fo
     // TODO: Fetch and set balance in context for an address
     let updateAmt = 0;
     context.setState(s => ({ ...s, tokenBalances: { ...s.tokenBalances, [address]: overrideAmt ? overrideAmt : updateAmt } }));
+}
+
+export const updateTokensSentStatus = (context, status) => {
+    context.setState(s => ({ ...s, tokensSent: status}));
 }
 
 export const MadContext = React.createContext(defaultState);
