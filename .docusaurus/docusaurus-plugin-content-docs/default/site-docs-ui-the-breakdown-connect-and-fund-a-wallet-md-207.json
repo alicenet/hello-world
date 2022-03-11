@@ -1,0 +1,26 @@
+{
+  "unversionedId": "UI - The Breakdown/connect-and-fund-a-wallet",
+  "id": "UI - The Breakdown/connect-and-fund-a-wallet",
+  "title": "Connect and Fund",
+  "description": "",
+  "source": "@site/docs/UI - The Breakdown/connect-and-fund-a-wallet.md",
+  "sourceDirName": "UI - The Breakdown",
+  "slug": "/UI - The Breakdown/connect-and-fund-a-wallet",
+  "permalink": "/docs/UI - The Breakdown/connect-and-fund-a-wallet",
+  "editUrl": "https://github.com/MadBase/madnet-hello-world/docs/UI - The Breakdown/connect-and-fund-a-wallet.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "sidebar_position": 3
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Create A Wallet",
+    "permalink": "/docs/UI - The Breakdown/create-a-wallet"
+  },
+  "next": {
+    "title": "Making Transactions",
+    "permalink": "/docs/UI - The Breakdown/about-txs"
+  }
+}

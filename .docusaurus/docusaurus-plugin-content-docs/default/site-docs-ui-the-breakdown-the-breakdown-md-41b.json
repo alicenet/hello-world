@@ -1,0 +1,26 @@
+{
+  "unversionedId": "UI - The Breakdown/the-breakdown",
+  "id": "UI - The Breakdown/the-breakdown",
+  "title": "The Breakdown",
+  "description": "",
+  "source": "@site/docs/UI - The Breakdown/the-breakdown.md",
+  "sourceDirName": "UI - The Breakdown",
+  "slug": "/UI - The Breakdown/the-breakdown",
+  "permalink": "/docs/UI - The Breakdown/the-breakdown",
+  "editUrl": "https://github.com/MadBase/madnet-hello-world/docs/UI - The Breakdown/the-breakdown.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "sidebar_position": 1
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "alice - A Primer",
+    "permalink": "/docs/intro"
+  },
+  "next": {
+    "title": "Create A Wallet",
+    "permalink": "/docs/UI - The Breakdown/create-a-wallet"
+  }
+}

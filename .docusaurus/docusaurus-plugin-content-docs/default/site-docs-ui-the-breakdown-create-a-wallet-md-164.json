@@ -1,0 +1,26 @@
+{
+  "unversionedId": "UI - The Breakdown/create-a-wallet",
+  "id": "UI - The Breakdown/create-a-wallet",
+  "title": "Create A Wallet",
+  "description": "",
+  "source": "@site/docs/UI - The Breakdown/create-a-wallet.md",
+  "sourceDirName": "UI - The Breakdown",
+  "slug": "/UI - The Breakdown/create-a-wallet",
+  "permalink": "/docs/UI - The Breakdown/create-a-wallet",
+  "editUrl": "https://github.com/MadBase/madnet-hello-world/docs/UI - The Breakdown/create-a-wallet.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "sidebar_position": 2
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "The Breakdown",
+    "permalink": "/docs/UI - The Breakdown/the-breakdown"
+  },
+  "next": {
+    "title": "Connect and Fund",
+    "permalink": "/docs/UI - The Breakdown/connect-and-fund-a-wallet"
+  }
+}

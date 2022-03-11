@@ -1,0 +1,27 @@
+{
+  "unversionedId": "ui-in-depth/send-value",
+  "id": "ui-in-depth/send-value",
+  "title": "Send Value",
+  "description": "Lorem Ipsum...",
+  "source": "@site/docs/ui-in-depth/send-value.md",
+  "sourceDirName": "ui-in-depth",
+  "slug": "/ui-in-depth/send-value",
+  "permalink": "/docs/ui-in-depth/send-value",
+  "editUrl": "https://github.com/MadBase/madnet-hello-world/docs/ui-in-depth/send-value.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "sidebar_position": 3,
+    "title": "Send Value"
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Fund Your Wallet",
+    "permalink": "/docs/ui-in-depth/fund-a-wallet"
+  },
+  "next": {
+    "title": "Store Data",
+    "permalink": "/docs/ui-in-depth/store-data"
+  }
+}

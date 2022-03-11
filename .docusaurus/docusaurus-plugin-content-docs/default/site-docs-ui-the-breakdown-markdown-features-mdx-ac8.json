@@ -1,0 +1,26 @@
+{
+  "unversionedId": "UI - The Breakdown/markdown-features",
+  "id": "UI - The Breakdown/markdown-features",
+  "title": "Markdown Features",
+  "description": "Docusaurus supports Markdown and a few additional features.",
+  "source": "@site/docs/UI - The Breakdown/markdown-features.mdx",
+  "sourceDirName": "UI - The Breakdown",
+  "slug": "/UI - The Breakdown/markdown-features",
+  "permalink": "/docs/UI - The Breakdown/markdown-features",
+  "editUrl": "https://github.com/MadBase/madnet-hello-world/docs/UI - The Breakdown/markdown-features.mdx",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 8,
+  "frontMatter": {
+    "sidebar_position": 8
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Making Transactions",
+    "permalink": "/docs/UI - The Breakdown/about-txs"
+  },
+  "next": {
+    "title": "Create A Wallet",
+    "permalink": "/docs/aliceJS - Tutorial/create-a-wallet"
+  }
+}

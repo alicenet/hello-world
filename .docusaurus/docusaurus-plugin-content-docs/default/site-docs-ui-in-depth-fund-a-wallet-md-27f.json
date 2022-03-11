@@ -1,0 +1,27 @@
+{
+  "unversionedId": "ui-in-depth/fund-a-wallet",
+  "id": "ui-in-depth/fund-a-wallet",
+  "title": "Fund Your Wallet",
+  "description": "Lorem Ipsum...",
+  "source": "@site/docs/ui-in-depth/fund-a-wallet.md",
+  "sourceDirName": "ui-in-depth",
+  "slug": "/ui-in-depth/fund-a-wallet",
+  "permalink": "/docs/ui-in-depth/fund-a-wallet",
+  "editUrl": "https://github.com/MadBase/madnet-hello-world/docs/ui-in-depth/fund-a-wallet.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "sidebar_position": 2,
+    "title": "Fund Your Wallet"
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Create A Test Wallet",
+    "permalink": "/docs/ui-in-depth/create-a-wallet"
+  },
+  "next": {
+    "title": "Send Value",
+    "permalink": "/docs/ui-in-depth/send-value"
+  }
+}

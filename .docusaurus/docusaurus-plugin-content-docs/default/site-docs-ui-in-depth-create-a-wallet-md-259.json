@@ -1,0 +1,27 @@
+{
+  "unversionedId": "ui-in-depth/create-a-wallet",
+  "id": "ui-in-depth/create-a-wallet",
+  "title": "Create A Test Wallet",
+  "description": "Lorem Ipsum...",
+  "source": "@site/docs/ui-in-depth/create-a-wallet.md",
+  "sourceDirName": "ui-in-depth",
+  "slug": "/ui-in-depth/create-a-wallet",
+  "permalink": "/docs/ui-in-depth/create-a-wallet",
+  "editUrl": "https://github.com/MadBase/madnet-hello-world/docs/ui-in-depth/create-a-wallet.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "sidebar_position": 1,
+    "title": "Create A Test Wallet"
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "AliceNet - A Primer",
+    "permalink": "/docs/intro"
+  },
+  "next": {
+    "title": "Fund Your Wallet",
+    "permalink": "/docs/ui-in-depth/fund-a-wallet"
+  }
+}

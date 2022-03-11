@@ -1,0 +1,26 @@
+{
+  "unversionedId": "UI - The Breakdown/about-txs",
+  "id": "UI - The Breakdown/about-txs",
+  "title": "Making Transactions",
+  "description": "Value Stores",
+  "source": "@site/docs/UI - The Breakdown/about-txs.md",
+  "sourceDirName": "UI - The Breakdown",
+  "slug": "/UI - The Breakdown/about-txs",
+  "permalink": "/docs/UI - The Breakdown/about-txs",
+  "editUrl": "https://github.com/MadBase/madnet-hello-world/docs/UI - The Breakdown/about-txs.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 4,
+  "frontMatter": {
+    "sidebar_position": 4
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Connect and Fund",
+    "permalink": "/docs/UI - The Breakdown/connect-and-fund-a-wallet"
+  },
+  "next": {
+    "title": "Markdown Features",
+    "permalink": "/docs/UI - The Breakdown/markdown-features"
+  }
+}
