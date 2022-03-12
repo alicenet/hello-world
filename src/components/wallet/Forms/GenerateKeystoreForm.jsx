@@ -78,7 +78,7 @@ export function GenerateKeystoreForm(
 
                 <Form.Input
                     label={
-                        <label className="flex justify-between">
+                        <label>
                             Password
                         </label>
                     }

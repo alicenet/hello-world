@@ -49,7 +49,7 @@ export function ImportPrivateKeyForm({ hideTitle }) {
                 value={formState.privateKey.value}
                 placeholder="0x..."
                 label={
-                    <label className="flex justify-between">
+                    <label>
                         Private Key
                     </label>
                 }
@@ -61,7 +61,6 @@ export function ImportPrivateKeyForm({ hideTitle }) {
                 size="small"
                 basic
                 loading={loading}
-                className="mt-16"
                 onClick={() => verifyPrivKey()}
                 color={error ? "red" : "green"}
                 disabled={success}
@@ -69,7 +68,7 @@ export function ImportPrivateKeyForm({ hideTitle }) {
                 icon={error ? "exclamation" : success ? "checkmark" : "plus"}
             />
 
-            <Message error className="absolute inset-center w-full">{error}</Message>
+            <Message error>{error}</Message>
 
             <div>{ks && !error && `Created account: ${JSON.parse(ks).address}`}</div>
 
