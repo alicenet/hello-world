@@ -76,3 +76,7 @@ html[data-theme="dark"] .header-github-link:before {
 .ui.button.primary {
     background: var(--ifm-color-primary) !important;
 }
+
+.table {
+    display: inline-table !important;
+}

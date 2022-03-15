@@ -26,11 +26,11 @@ export function GenerateWalletAgreement({ tickState, setTickState }) {
                     For my safety, I will not try to use the generated wallet outside of this demo and I acknowledge it is stored insecurely for demo purposes only <br />
                 </List.Item>
                 <List.Item>
-                    I acknowledge and authorize that any demo wallet will be stored as a temporary cookie on my computer for this session.<br />
+                    I acknowledge and authorize that any demo wallet and demo progress will be stored as a temporary cookies on my computer for this session.<br />
                 </List.Item>
             </List>
 
-            Please note that we do not use cookies for any other purpose on this application.
+            Please note that we do not use cookies for any other purpose on this application other than to ease the user experience.
 
             <br /><br />
 

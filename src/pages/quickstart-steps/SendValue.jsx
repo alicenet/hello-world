@@ -21,9 +21,8 @@ export function SendValue({ nextStep }) {
     return (
         <div>
             <Header content="Send Value" /> <br />
-            Now that you have some tokens, lets get rid of some. <br />
-            For this example we'll send 100 tokens to a pre-determined address <br />
-            After the transaction we'll poll for the demo wallet's balance and the receiver's address<br /> <br />
+            Sending value isn't a CRUD action, though it will let us make sure everything is working correctly and demonstrate a basic transaction with AliceNet. <br/><br/>
+            For this example we'll send 100 tokens to a pre-determined address below. <br /> <br/>
             <div style={{ marginTop: "1rem" }}>
                 <AddValueForm onSendValue={onSendValue}/>
             </div>

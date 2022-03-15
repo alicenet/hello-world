@@ -18,7 +18,7 @@ export function GenerateBurnerAccount({ color, content, disabled }) {
     const madAdapterContext = React.useContext(MadContext);
     const madNetAdapter = useMadNetAdapter(madAdapterContext);
     const [isAgreementChecked, setAgreementTick] = React.useState(false);
-    const [, setCookie] = useCookies(['alice-demo-wallet']); 
+    const [, setCookie] = useCookies(); 
 
     /**
      * Use current date to generate a demo burner wallet and add to Accounts
@@ -29,7 +29,7 @@ export function GenerateBurnerAccount({ color, content, disabled }) {
         let hash = await madNetAdapter.getMadNetWalletInstance().Utils.hash("0x" + pRaw.toString());
         await madNetAdapter.getMadNetWalletInstance().Account.addAccount(hash);
         const newAddress = madNetAdapter.getMadNetWalletInstance().Account.accounts[madNetAdapter.getMadNetWalletInstance().Account.accounts.length - 1].address;
-        setCookie('alice-demo-raw-root', pRaw);
+        setCookie('aliceNetDemo-raw-root', pRaw);
         addAddressToAccounts(madAdapterContext, newAddress);
     }
 

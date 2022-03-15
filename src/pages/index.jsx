@@ -59,14 +59,14 @@ const QuickStart = () => {
                     <Step active={step == 2} completed={false} disabled={!hasWalletSetup} onClick={() => gotoStep(2)}>
                         <Step.Content>
                             <Step.Title>Get some tokens</Step.Title>
-                            <Step.Description>CRUD OPs require tokens</Step.Description>
+                            <Step.Description>CRUD requires tokens</Step.Description>
                         </Step.Content>
                     </Step>
 
                     <Step active={step == 3} completed={false} disabled={!hasSufficientBalance} onClick={() => gotoStep(3)}>
                         <Step.Content>
                             <Step.Title>Send Value</Step.Title>
-                            <Step.Description>Send some MadBytes</Step.Description>
+                            <Step.Description>Send some tokens</Step.Description>
                         </Step.Content>
                     </Step>
 

@@ -44,10 +44,11 @@ export const defaultState = {
 export const MadContext = React.createContext(defaultState);
 
 export const addAddressToAccounts = (context, address) => {
+    console.log(address)
     context.setState(s => ({ ...s, accounts: [...s.accounts, address], tokenBalances: { ...s.tokenBalances, [address]: 0 } }));
 }
 
-export const updateBalance = async (context, address) => { 
+export const updateBalance = async (context, address) => {
     let [balance] = await madNetAdapter._getMadNetWalletBalanceAndUTXOs(address);
     context.setState(s => ({ ...s, tokenBalances: { ...s.tokenBalances, [address]: balance } }));
 }
@@ -57,12 +58,17 @@ export const updateTokensSentStatus = (context, status) => {
 }
 
 export const checkForCookieWallet = async (context, cookies) => {
-    if (cookies['alice-demo-raw-root']) {
+    if (cookies['aliceNetDemo-raw-root']) {
+        if (cookies['aliceNetDemo-has-sent-value'] && cookies['aliceNetDemo-has-sent-value'] === 'true' ) {
+            updateTokensSentStatus(context, true);
+        } else {
+            updateTokensSentStatus(context, false);
+        }
         let walletInstance = madNetAdapter.getMadNetWalletInstance();
         if (walletInstance.Account.accounts.length === 0) { // Only add if not added yet -- Should only ever be one here.
-            let pRaw = cookies['alice-demo-raw-root']
+            let pRaw = cookies['aliceNetDemo-raw-root']
             let hash = await walletInstance.Utils.hash("0x" + pRaw.toString());
-            await madNetAdapter.getMadNetWalletInstance().Account.addAccount(hash, 1);
+            await walletInstance.Account.addAccount(hash, 1);
             let loadedAddress = await walletInstance.Account.accounts[madNetAdapter.getMadNetWalletInstance().Account.accounts.length - 1].address;
             addAddressToAccounts(context, loadedAddress);
             await updateBalance(context, loadedAddress);
