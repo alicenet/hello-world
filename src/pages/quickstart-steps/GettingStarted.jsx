@@ -5,7 +5,7 @@ import { Link } from '@docusaurus/router';
 
 export function GettingStarted({ nextStep }) {
     return (
-        <div>
+        <div style={{textAlign: "left"}}>
             <Link className={styles.inDepthLink} to="/docs/intro">
                 <Icon name="external" size="small" />
             </Link>

@@ -61,14 +61,24 @@ export const checkForCookieWallet = async (context, cookies) => {
     if (cookies['aliceNetDemo-raw-root']) {
         if (cookies['aliceNetDemo-has-sent-value'] && cookies['aliceNetDemo-has-sent-value'] === 'true' ) {
             updateTokensSentStatus(context, true);
+            console.log("sentTrue")
         } else {
             updateTokensSentStatus(context, false);
         }
         let walletInstance = madNetAdapter.getMadNetWalletInstance();
+        console.log(context.state)
+        console.log( walletInstance.Account.accounts)
         if (walletInstance.Account.accounts.length === 0) { // Only add if not added yet -- Should only ever be one here.
+            console.log("ADD")
             let pRaw = cookies['aliceNetDemo-raw-root']
             let hash = await walletInstance.Utils.hash("0x" + pRaw.toString());
             await walletInstance.Account.addAccount(hash, 1);
+            let loadedAddress = await walletInstance.Account.accounts[madNetAdapter.getMadNetWalletInstance().Account.accounts.length - 1].address;
+            addAddressToAccounts(context, loadedAddress);
+            await updateBalance(context, loadedAddress);
+        } 
+        else if (walletInstance.Account.accounts.length > 0 && context.state.accounts == 0) { // Reload to state -- Covers mdx/doc context switch 
+            console.log( walletInstance.Account.accounts)
             let loadedAddress = await walletInstance.Account.accounts[madNetAdapter.getMadNetWalletInstance().Account.accounts.length - 1].address;
             addAddressToAccounts(context, loadedAddress);
             await updateBalance(context, loadedAddress);

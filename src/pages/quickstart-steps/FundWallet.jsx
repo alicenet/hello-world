@@ -4,7 +4,6 @@ import { Button, Header, Segment, Message, Icon } from 'semantic-ui-react';
 import styles from '../quickstart.module.css';
 import { fundAddress } from '../../api/api';
 import { MadContext, updateBalance } from '../../context/MadWalletContext';
-import { useMadNetAdapter } from '../../adapter/MadNetAdapter';
 import { Link } from '@docusaurus/router';
 
 export function FundWallet({ nextStep }) {
@@ -46,16 +45,14 @@ export function FundWallet({ nextStep }) {
 
     const BalanceForm = () => {
         return (
-            <Segment basic>
-                You're about to fund the following address:
-                <br /><br />
-                <strong>{address}</strong>
+            <Segment color={balance >= 2000 ? "green" : "yellow"}>
+                You're about to fund the following address: <strong>{address}</strong>
                 <br /> <br />
                 This can take up to a minute or two, so go ahead and press the button to get started.<br /> <br/>
                 Please wait for funding to finish.
                 <br />
-                <Button loading={loading} style={{ marginTop: "2rem" }} color="green" disabled={balance > 2000} size="small" basic
-                    content={balance > 2000 ? "Already funded!" : "Fund Above Address"} onClick={callApiForFunding}
+                <Button loading={loading} style={{ marginTop: "2rem" }} color="green" disabled={balance >= 2000} size="small" basic
+                    content={balance >= 2000 ? "Already funded!" : "Fund Above Address"} onClick={callApiForFunding}
                 />
                 <div style={{ marginTop: "1rem", color: "grey" }}>
                     Current Balance: <strong>{balance} Tokens</strong>
@@ -67,11 +64,10 @@ export function FundWallet({ nextStep }) {
     }
 
     return (
-        <div>
+        <div style={{textAlign: "left"}}>
             <Link className={styles.inDepthLink} to="/docs/ui-in-depth/fund-a-wallet" target="_blank">
                 <Icon name="external" size="small" />
             </Link>
-            <Header content="Fund generated address" /> <br />
             Before you can perform CRUD actions, you need some tokens. <br />
             For this demo we can do that easily by pressing the button below. <br /> <br />
             Outside of this demo, tokens would normally be swapped for on Ethereum. <br /> <br />
@@ -82,8 +78,8 @@ export function FundWallet({ nextStep }) {
                 <BalanceForm />
             </div>
             <div className={styles.buttonWrap}>
-                <Button color={balance > 2000 ? "green" : "orange"} onClick={nextStep} disabled={!balance || balance < 2000}
-                    content={balance > 2000 ? "Continue" : "Insufficient funds"}
+                <Button color={balance >= 2000 ? "green" : "orange"} onClick={nextStep} disabled={!balance || balance < 2000}
+                    content={balance >= 2000 ? "Continue" : "Insufficient funds"}
                     labelPosition="right" icon={balance < 2000 ? "x" : "arrow right"} floated='right' />
             </div>
         </div>

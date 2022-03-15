@@ -18,11 +18,10 @@ export function GenerateWallet({ nextStep }) {
     }, [])
 
     return (
-        <div>
+        <div style={{textAlign:"left"}}>
             <Link className={styles.inDepthLink} to="/docs/ui-in-depth/create-a-wallet" target="_blank">
                 <Icon name="external" size="small" />
             </Link>
-            <Header content="Generate a demo wallet" /> <br />
             For this example, we are going to generate a temporary wallet to use for demonstration purposes. <br /> <br />
             When you use AliceNet Wallet or AliceNetJS, you can load your own private keys, but for this application we recommend using a new set. <br /> <br />
             Click the button below to generate a wallet and see its public address. <br />

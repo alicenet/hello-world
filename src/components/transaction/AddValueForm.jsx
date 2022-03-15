@@ -16,7 +16,7 @@ export function AddValueForm({ onSendValue }) {
     const state = madAdapterContext.state;
     const wallets = state.accounts;
     const tokensSent = state.tokensSent;
-    const [, setCookie] = useCookies(); 
+    const [, setCookie] = useCookies();
 
     const [formState, formSetter] = useFormState([
         { name: 'From', display: 'From address', type: 'address', isRequired: true, value: wallets[0] },
@@ -74,7 +74,7 @@ export function AddValueForm({ onSendValue }) {
 
     return (
         <div style={{ margin: '1rem 3rem' }}>
-            <Grid textAlign="center">
+            <Grid textAlign="left">
 
                 <Grid.Row>
                     <Grid.Column>
@@ -83,7 +83,7 @@ export function AddValueForm({ onSendValue }) {
                             disabled
                             action={
                                 <Button
-                                    icon={ tokensSent ? "thumbs up" : "currency"}
+                                    icon={tokensSent ? "thumbs up" : "currency"}
                                     content={tokensSent ? "Value Sent! (Send Again?)" : "Send Value"}
                                     basic
                                     color="teal"
@@ -101,7 +101,7 @@ export function AddValueForm({ onSendValue }) {
 
                 <Grid.Row>
                     <Grid.Column width={16}>
-                        <p style={{fontSize: "11px"}}>
+                        <p style={{ fontSize: "11px" }}>
                             You may notice a deduction on the from account greater than the amount, this is due to the associated Transaction Fees<br />
                             They are generally quite low for value transactions and should be around ~5-6 tokens at the moment.
                         </p>
@@ -124,10 +124,19 @@ export function AddValueForm({ onSendValue }) {
                                 </Table.Row>
                             </Table.Body>
                         </Table>
+                        <div style={{ fontSize: "11px" }}>
+                            Remember! All actions on AliceNet require a transaction. <br/> 
+                            Whether you are sending a value with ValueStore like in this example, or a DataStore in the next example. <br/>
+                            <b>Both are technically transactions.</b>
+                        </div>
                     </Grid.Column>
                 </Grid.Row>
 
-                <Grid.Row>{error && <Message error>There was a problem during the transaction</Message>}</Grid.Row>
+                <Grid.Row>
+                    <Grid.Column width={16}>
+                        {error && <Message error>There was a problem during the transaction</Message>}
+                    </Grid.Column>
+                </Grid.Row>
 
             </Grid>
         </div>

@@ -10,12 +10,13 @@ import { MadContext } from "../../../context/MadWalletContext";
  */
 export function GenerateWalletAgreement({ tickState, setTickState }) {
 
-    const colorProp = tickState ? { color: "green" } : {};
     const wallets = React.useContext(MadContext).state.accounts;
     
     if (wallets.length > 0) {
-        return ""
+        setTickState(true); // Show green message if a wallet has been created
     }
+
+    const colorProp = tickState ? { color: "green" } : {};
 
     return (
         <Message warning size="small" {...colorProp}>
@@ -37,7 +38,7 @@ export function GenerateWalletAgreement({ tickState, setTickState }) {
             <Checkbox label="I Agree" checked={tickState} onClick={(e, data) => { setTickState(data.checked); console.log(data.checked) }} />
 
             <Header as="h5" style={{ marginTop: "1rem" }}>
-                {tickState ? "Thanks! -- You're ready to generate a test wallet" : "Please agree to the above terms"}
+                {tickState ? wallets.length == 0 ? "Thanks! -- You're ready to generate a demo wallet" : "You've already generated a demo wallet." : "Please agree to the above terms"}
             </Header>
 
         </Message>
