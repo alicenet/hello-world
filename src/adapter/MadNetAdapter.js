@@ -133,7 +133,7 @@ class MadNetAdapter {
     async createAndsendTx(tx) {
         if(!tx) return
 
-        await this.wallet().Transaction.createTxFee(tx.from, tx.type, false);
+        await this.wallet().Transaction.createTxFee(tx.from, SECP256K1);
 
         if(tx.type === VALUE_STORE) {
             await this.wallet().Transaction.createValueStore(tx.from, tx.value, tx.to, SECP256K1);

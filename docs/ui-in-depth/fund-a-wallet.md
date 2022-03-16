@@ -3,8 +3,6 @@ sidebar_position: 2
 title: "Fund Your Wallet"
 ---
 
-import { WalletAddress } from '../../src/components/docComponents/walletAddress.jsx'
-
 # Fund Your Wallet
 
 Now that you have a demo wallet, we can fund it with some testnet tokens.
