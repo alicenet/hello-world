@@ -2,9 +2,6 @@
 sidebar_position: 1
 ---
 
-import Link from '@docusaurus/Link';
-import { Button, Segment } from 'semantic-ui-react'
-
 # AliceNet - A Primer
 
 :::tip TIP
@@ -63,7 +60,3 @@ Be sure to check out each piece below if you're interested in developing your ow
 - [Funding A Wallet](http://google.com)
 - [Send Value (Using ValueStores)](http://google.com)
 - [Store Data (Using DataStores)](http://google.com)
-
-<Segment basic style={{padding: "0rem"}}>
-    <Button size='mini' primary as={Link} to="/" content="To Quick Start" icon="arrow right" labelPosition="right" />
-</Segment>

@@ -2,9 +2,15 @@ import React, { useState, useContext } from 'react';
 import { Grid, Header, Segment, Step, Container, Icon } from 'semantic-ui-react';
 import Layout from '@theme/Layout';
 import { MadContext, MadProvider, checkForCookieWallet } from '../context/MadWalletContext';
-import { GettingStarted, GenerateWallet, FundWallet, SendValue, StoreData } from './quickstart-steps';
+import GettingStarted from './quickstart-steps/GettingStarted';
+import GenerateWallet from './quickstart-steps/GenerateWallet';
+import FundWallet from './quickstart-steps/FundWallet';
+import SendValue from './quickstart-steps/SendValue'
+import StoreData from './quickstart-steps/StoreData'
+
 import 'semantic-ui-css/semantic.min.css'
 import { useCookies } from 'react-cookie';
+import BrowserOnly from '@docusaurus/BrowserOnly';
 
 const QuickStart = () => {
 
@@ -34,6 +40,8 @@ const QuickStart = () => {
     React.useEffect(() => {
         checkForCookieWallet(ctx, cookies);
     }, [step])
+
+    console.log(Container)
 
     return (
         <Container>
@@ -94,20 +102,27 @@ const QuickStart = () => {
 export default function () {
 
     return (
-        <Layout>
-            <div className="page-wrap">
-                <Grid textAlign="center">
-                    <Grid.Column width={16}>
-                        <Header as="h2" content="AliceNet CRUD Quickstart" />
-                    </Grid.Column>
-                    <Grid.Column width={16}>
-                        <MadProvider>
-                            <QuickStart />
-                        </MadProvider>
-                    </Grid.Column>
-                </Grid>
-            </div>
-        </Layout>
+
+        <BrowserOnly fallback={<div>Loading...</div>}>
+            {() => {
+                return (
+                    <Layout>
+                        <div className="page-wrap">
+                            <Grid textAlign="center">
+                                <Grid.Column width={16}>
+                                    <Header as="h2" content="AliceNet CRUD Quickstart" />
+                                </Grid.Column>
+                                <Grid.Column width={16}>
+                                    <MadProvider>
+                                        <QuickStart />
+                                    </MadProvider>
+                                </Grid.Column>
+                            </Grid>
+                        </div>
+                    </Layout>
+                )
+            }}
+        </BrowserOnly>
     )
 
 }

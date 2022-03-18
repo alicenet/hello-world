@@ -1,4 +1,6 @@
 const webpack = require('webpack');
+const path = require('path');
+const nodeExternals = require('webpack-node-externals');
 
 // eslint-disable-next-line
 module.exports = function (context, options) {
@@ -7,6 +9,7 @@ module.exports = function (context, options) {
         // eslint-disable-next-line
         configureWebpack(config, isServer, utils) {
             return {
+                // externals: [nodeExternals({importType: 'umd'})],
                 resolve: {
                     alias: {
                         process: require.resolve('process'),
@@ -29,7 +32,10 @@ module.exports = function (context, options) {
                         process: 'process/browser',
                         Buffer: ['buffer', 'Buffer']
                     })
-                ]
+                ],
+                output: {
+                    libraryTarget: "umd"
+                }
             };
         },
     };

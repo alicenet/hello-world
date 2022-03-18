@@ -1,9 +1,10 @@
 import React from 'react';
 import { Button, Header, Icon } from 'semantic-ui-react';
 import styles from '../quickstart.module.css';
-import { Link } from '@docusaurus/router';
+import Link from '@docusaurus/Link';
 
-export function GettingStarted({ nextStep }) {
+export default function GettingStarted({ nextStep }) {
+
     return (
         <div style={{textAlign: "left"}}>
             <Link className={styles.inDepthLink} to="/docs/intro">

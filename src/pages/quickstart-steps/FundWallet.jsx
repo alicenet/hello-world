@@ -1,12 +1,12 @@
 
 import React, { useState, useContext, useEffect } from 'react';
-import { Button, Header, Segment, Message, Icon } from 'semantic-ui-react';
-import styles from '../quickstart.module.css';
+import { Button, Segment, Message, Icon } from 'semantic-ui-react';
 import { fundAddress } from '../../api/api';
 import { MadContext, updateBalance } from '../../context/MadWalletContext';
-import { Link } from '@docusaurus/router';
+import Link from '@docusaurus/Link';
+import styles from '../quickstart.module.css';
 
-export function FundWallet({ nextStep }) {
+export default function FundWallet({ nextStep }) {
 
     const ctx = useContext(MadContext);
     const [error, setError] = useState('');

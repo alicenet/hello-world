@@ -3,9 +3,9 @@ import { Button, Icon } from 'semantic-ui-react';
 import styles from '../quickstart.module.css';
 import { MadContext, updateTokensSentStatus } from '../../context/MadWalletContext';
 import { AddValueForm } from '../../components/transaction';
-import { Link } from '@docusaurus/router';
+import Link from '@docusaurus/Link';
 
-export function SendValue({ nextStep }) {
+export default function SendValue({ nextStep }) {
 
     // This form should have a prefill input with amoung '100' to send a value store transaction to
     // the following address: 01527b9166b4e323384a536996e84f572bab62a0

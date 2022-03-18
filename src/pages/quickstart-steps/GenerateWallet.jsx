@@ -1,12 +1,12 @@
 import React, { useContext } from 'react';
-import { Button, Header, Segment, Icon, Message, Checkbox } from 'semantic-ui-react';
+import { Button, Segment, Icon } from 'semantic-ui-react';
 import styles from '../quickstart.module.css';
 import { MadContext, checkForCookieWallet } from '../../context/MadWalletContext';
 import { GenerateBurnerAccount } from '../../components/wallet/Forms/GenerateBurnerAccount';
-import { Link } from '@docusaurus/router';
+import Link from '@docusaurus/Link';
 import { useCookies } from 'react-cookie'
 
-export function GenerateWallet({ nextStep }) {
+export default function GenerateWallet({ nextStep }) {
 
     const ctx = useContext(MadContext);
     const wallets = ctx.state.accounts;

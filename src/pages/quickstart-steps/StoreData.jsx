@@ -1,10 +1,10 @@
 import React from 'react';
 import { List, Icon } from 'semantic-ui-react';
 import { AddDataStoreForm } from '../../components/transaction';
-import { Link } from '@docusaurus/router';
+import Link from '@docusaurus/Link';
 import styles from '../quickstart.module.css';
 
-export function StoreData() {
+export default function StoreData() {
 
     /**
      * This form is going to be for storing and reading a piece of data
