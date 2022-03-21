@@ -47,16 +47,16 @@ export const MadContext = React.createContext(defaultState);
 
 export const addAddressToAccounts = (context, address) => {
     console.log(address)
-    context.setState(s => ({ ...s, accounts: [...s.accounts, address], tokenBalances: { ...s.tokenBalances, [address]: 0 } }));
+    context.setState(s => ({ state: { ...s.state, accounts: [...s.state.accounts, address], tokenBalances: { ...s.state.tokenBalances, [address]: 0 } } }));
 }
 
 export const updateBalance = async (context, address) => {
     let [balance] = await madNetAdapter._getMadNetWalletBalanceAndUTXOs(address);
-    context.setState(s => ({ ...s, tokenBalances: { ...s.tokenBalances, [address]: balance } }));
+    context.setState(s => ({ state: { ...s.state, tokenBalances: { ...s.state.tokenBalances, [address]: balance } }}));
 }
 
 export const updateTokensSentStatus = (context, status) => {
-    context.setState(s => ({ ...s, tokensSent: status }));
+    context.setState(s => ({ state: { ...s.state, tokensSent: status} }));
 }
 
 export const checkForCookieWallet = async (context, cookies) => {

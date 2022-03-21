@@ -9,7 +9,9 @@ module.exports = function (context, options) {
         // eslint-disable-next-line
         configureWebpack(config, isServer, utils) {
             return {
-                // externals: [nodeExternals({importType: 'umd'})],
+                externals: {
+                    madnetjs: 'madnetjs'
+                },
                 resolve: {
                     alias: {
                         process: require.resolve('process'),

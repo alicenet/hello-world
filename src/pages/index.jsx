@@ -1,5 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Grid, Header, Segment, Step, Container, Icon } from 'semantic-ui-react';
+import { useCookies } from 'react-cookie';
+import BrowserOnly from '@docusaurus/BrowserOnly';
 import Layout from '@theme/Layout';
 import { MadContext, MadProvider, checkForCookieWallet } from '../context/MadWalletContext';
 import GettingStarted from './quickstart-steps/GettingStarted';
@@ -9,8 +11,6 @@ import SendValue from './quickstart-steps/SendValue'
 import StoreData from './quickstart-steps/StoreData'
 
 import 'semantic-ui-css/semantic.min.css'
-import { useCookies } from 'react-cookie';
-import BrowserOnly from '@docusaurus/BrowserOnly';
 
 const QuickStart = () => {
 
