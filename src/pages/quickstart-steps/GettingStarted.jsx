@@ -7,7 +7,7 @@ export default function GettingStarted({ nextStep }) {
 
     return (
         <div style={{textAlign: "left"}}>
-            <Link className={styles.inDepthLink} to="/">
+            <Link className={styles.inDepthLink} to="/docs/intro">
                 <Icon name="external" size="small" />
             </Link>
             <Header sub content="Purpose" /> <br />
@@ -17,11 +17,11 @@ export default function GettingStarted({ nextStep }) {
             against the testnetwork for experimentation. <br /> <br />
 
             Each step will provide a link in the <strong>top right corner</strong> with the &nbsp; <Icon name="external" size="small" /> icon to link to the underlying
-            <Link to="/"> In Depth</Link> page about each specific step.
+            <Link to="/docs/in-depth"> In Depth</Link> page about each specific step.
 
             <br /><br />
 
-            The <Link to="/">In Depth</Link> page will describe in detail what is happening on the underlying API, AliceNetJs, with some supporting examples.
+            The <Link to="/docs/in-depth">In Depth</Link> page will describe in detail what is happening on the underlying API, AliceNetJs, with some supporting examples.
             <b /> <br />
             <div className={styles.buttonWrap}>
                 <Button color="green" onClick={nextStep} content="Continue"
