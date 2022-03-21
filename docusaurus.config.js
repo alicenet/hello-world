@@ -11,7 +11,7 @@ const config = {
     tagline: 'A simple, secure, Layer 2 solution',
     url: 'https://your-docusaurus-test-site.com',
     baseUrl: '/',
-    onBrokenLinks: 'throw',
+    onBrokenLinks: 'warn',
     onBrokenMarkdownLinks: 'warn',
     favicon: 'img/favicon.ico',
     organizationName: 'MadBase', // Usually your GitHub org/user name.

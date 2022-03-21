@@ -38,7 +38,7 @@ This micro app quickly shows what is possible while abstracting the underlying A
 
 You won't look at code here, but you'll be able to interact directly with AliceNet using a lite-ui built with AliceNetJs just for this tutorial.
 
-Additionally, if you're curious we have provided an [In-Depth](/) at each step so you can see what calls are being made to AliceNetJs below the hood.
+Additionally, if you're curious we have provided an [In-Depth](/docs/in-depth) at each step so you can see what calls are being made to AliceNetJs below the hood.
 
 With the UI Guided tutorial you will be able to:
 

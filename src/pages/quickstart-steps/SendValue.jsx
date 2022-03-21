@@ -12,13 +12,8 @@ export default function SendValue({ nextStep }) {
     // Additionally we should show the address and balance of both wallets participating in this transaction
 
     // const ctx = useContext(MadContext);
-    const ctx = {
-        state: {
-            accounts: [ 'account' ],
-            tokenBalances: '',
-            tokensSent: ''
-        }
-    };
+    // TODO Remove this after..
+    const ctx = { state: useContext(MadContext) };
 
     const { tokensSent } = ctx.state;
 
