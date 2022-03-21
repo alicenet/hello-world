@@ -10,9 +10,7 @@ import { MadContext } from "../../../context/MadWalletContext";
  */
 export function GenerateWalletAgreement({ tickState, setTickState }) {
 
-    // const wallets = React.useContext(MadContext).state.accounts;
-    // TODO Remove this after..
-    const wallets = React.useContext(MadContext).accounts;
+    const wallets = React.useContext(MadContext).state.accounts;
     
     if (wallets.length > 0) {
         setTickState(true); // Show green message if a wallet has been created

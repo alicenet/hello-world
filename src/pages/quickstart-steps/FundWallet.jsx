@@ -8,9 +8,7 @@ import styles from '../quickstart.module.css';
 
 export default function FundWallet({ nextStep }) {
 
-    // const ctx = useContext(MadContext);
-    // TODO Remove this after..
-    const ctx = { state: useContext(MadContext) };
+    const ctx = useContext(MadContext);
     const [error, setError] = useState('');
 
     const { address, balance } = {
