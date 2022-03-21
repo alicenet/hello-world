@@ -13,7 +13,12 @@ export function AddValueForm({ onSendValue }) {
 
     const madAdapterContext = useContext(MadContext);
     const madNetAdapter = useMadNetAdapter(madAdapterContext);
-    const state = madAdapterContext.state;
+    // const state = madAdapterContext.state;
+    const state = {
+        accounts: [ 'account' ],
+        tokenBalances: '',
+        tokensSent: ''
+    };
     const wallets = state.accounts;
     const tokensSent = state.tokensSent;
     const [, setCookie] = useCookies();

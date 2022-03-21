@@ -15,7 +15,17 @@ import { useCookies } from 'react-cookie';
  */
 export function GenerateBurnerAccount({ color, content, disabled }) {
 
-    const madAdapterContext = React.useContext(MadContext);
+    const context = {
+        state: {
+            accounts: [ 'account' ],
+            tokenBalances: '',
+            tokensSent: ''
+        }
+    };
+
+    const madAdapterContext = context;
+    // const madAdapterContext = React.useContext(MadContext);
+    
     const madNetAdapter = useMadNetAdapter(madAdapterContext);
     const [isAgreementChecked, setAgreementTick] = React.useState(false);
     const [, setCookie] = useCookies(); 

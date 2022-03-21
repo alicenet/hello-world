@@ -1,4 +1,4 @@
-import MadWallet from 'madnetjs';
+// import MadWallet from 'madnetjs';
 import { defaultState } from '../context/MadWalletContext';
 
 //TODO add to env because no CRA
@@ -18,7 +18,35 @@ export const initialConfigurationState = {
 }
 
 
-let madWallet = new MadWallet(false, initialConfigurationState.mad_net_provider);
+// let madWallet = new MadWallet(false, initialConfigurationState.mad_net_provider);
+
+let madWallet = {
+    Account: {
+        accounts: [
+            {
+                address: 'asdasdasdas'
+            }
+        ]
+    },
+    Rpc: {
+        setProvider: () => {},
+        getFees: () => ({
+            atomicSwapFee: 'fees',
+            dataStoreFee: 'fees',
+            minTxFee: 'fees',
+            valueStoreFee: 'fees'
+        }),
+        getValueStoreUTXOIDs: () => {},
+        getMinedTransaction: () => {}
+    },
+    Transaction: {
+        createTxFee: () => {},
+        createValueStore: () => {},
+        createDataStore: () => {},
+        sendTx: () => {},
+        _reset: () => {},
+    }
+}
 
 class MadNetAdapter {
 

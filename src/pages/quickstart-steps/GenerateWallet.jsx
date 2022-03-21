@@ -8,7 +8,14 @@ import { useCookies } from 'react-cookie'
 
 export default function GenerateWallet({ nextStep }) {
 
-    const ctx = useContext(MadContext);
+    // const ctx = useContext(MadContext);
+    const ctx = {
+        state: {
+            accounts: [ 'account' ],
+            tokenBalances: '',
+            tokensSent: ''
+        }
+    };
     const wallets = ctx.state.accounts;
     const cookies = useCookies();
 

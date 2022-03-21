@@ -17,7 +17,14 @@ const QuickStart = () => {
     const [step, setStep] = useState(0);
     const gotoStep = (stepNum) => { setStep(stepNum); }
     const nextStep = () => { setStep(s => s + 1); }
-    const ctx = useContext(MadContext);
+    // const ctx = useContext(MadContext);
+    const ctx = {
+        state: {
+            accounts: [ 'account' ],
+            tokenBalances: '',
+            tokensSent: ''
+        }
+    };
 
     const [cookies] = useCookies()
 

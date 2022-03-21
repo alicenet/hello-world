@@ -16,7 +16,12 @@ export function AddDataStoreForm() {
 
     const madAdapterContext = useContext(MadContext);
     const madNetAdapter = useMadNetAdapter(madAdapterContext);
-    const state = madAdapterContext.state;
+    // const state = madAdapterContext.state;
+    const state = {
+        accounts: [ 'account' ],
+        tokenBalances: '',
+        tokensSent: ''
+    };
     const wallets = state.accounts;
 
     const [loadingWrite, setLoadingWrite] = useState(false);
