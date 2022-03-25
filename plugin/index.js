@@ -1,6 +1,4 @@
 const webpack = require('webpack');
-const path = require('path');
-const nodeExternals = require('webpack-node-externals');
 
 // eslint-disable-next-line
 module.exports = function (context, options) {
@@ -8,8 +6,9 @@ module.exports = function (context, options) {
         name: 'polyfills-plugin',
         // eslint-disable-next-line
         configureWebpack(config, isServer, utils) {
-            return {
-                // externals: [nodeExternals({importType: 'umd'})],
+            let webpackConfig;
+             
+            webpackConfig = {
                 resolve: {
                     alias: {
                         process: require.resolve('process'),
@@ -31,12 +30,24 @@ module.exports = function (context, options) {
                     new webpack.ProvidePlugin({
                         process: 'process/browser',
                         Buffer: ['buffer', 'Buffer']
-                    })
+                    }),
                 ],
                 output: {
                     libraryTarget: "umd"
                 }
             };
+
+            // Config only for server - Exclude madnetjs library from the output bundle 
+            if(isServer) {
+                webpackConfig = {
+                    ...webpackConfig,
+                    externals: {
+                        madnetjs: 'madnetjs'
+                    }
+                };
+            }
+
+            return webpackConfig;
         },
     };
 };

@@ -2,59 +2,61 @@ import React from 'react';
 import madNetAdapter from '../adapter/MadNetAdapter';
 
 export const defaultState = {
-    connected: false,
-    busy: false,
-    error: false,
-    accounts: [],
-    tokenBalances: {}, // K:V where K is address and v is tokenBalance
-    tokensSent: false,
-    config: {
-        mad_net_chainID: false, // Not needed
-        mad_net_provider: "", // Testnet from env
-    },
-    transactions: {
-        txOuts: [],
-        changeAddress: { "address": "", "bnCurve": false },
-        pendingTx: "",
-        pendingTxStatus: false,
-        pendingLocked: false,
-    },
-    blocks: {
-        list: [],
-        status: "",
-        started: false,
-        current: "",
-        locked: false,
-    },
-    txExplore: {
-        txHash: "",
-        tx: false,
-        txHeight: 0,
-    },
-    dataExplore: {
-        redirected: false,
-        searchOpts: false,
-        dataStores: [],
-        activePage: [],
-        dsView: []
-    },
-    fees: {},
+    state: {
+        connected: false,
+        busy: false,
+        error: false,
+        accounts: [],
+        tokenBalances: {}, // K:V where K is address and v is tokenBalance
+        tokensSent: false,
+        config: {
+            mad_net_chainID: false, // Not needed
+            mad_net_provider: "", // Testnet from env
+        },
+        transactions: {
+            txOuts: [],
+            changeAddress: { "address": "", "bnCurve": false },
+            pendingTx: "",
+            pendingTxStatus: false,
+            pendingLocked: false,
+        },
+        blocks: {
+            list: [],
+            status: "",
+            started: false,
+            current: "",
+            locked: false,
+        },
+        txExplore: {
+            txHash: "",
+            tx: false,
+            txHeight: 0,
+        },
+        dataExplore: {
+            redirected: false,
+            searchOpts: false,
+            dataStores: [],
+            activePage: [],
+            dsView: []
+        },
+        fees: {},
+    }
 }
 
 export const MadContext = React.createContext(defaultState);
 
 export const addAddressToAccounts = (context, address) => {
     console.log(address)
-    context.setState(s => ({ ...s, accounts: [...s.accounts, address], tokenBalances: { ...s.tokenBalances, [address]: 0 } }));
+    context.setState(s => ({ state: { ...s.state, accounts: [...s.state.accounts, address], tokenBalances: { ...s.state.tokenBalances, [address]: 0 } } }));
 }
 
 export const updateBalance = async (context, address) => {
     let [balance] = await madNetAdapter._getMadNetWalletBalanceAndUTXOs(address);
-    context.setState(s => ({ ...s, tokenBalances: { ...s.tokenBalances, [address]: balance } }));
+    context.setState(s => ({ state: { ...s.state, tokenBalances: { ...s.state.tokenBalances, [address]: balance } }}));
 }
 
 export const updateTokensSentStatus = (context, status) => {
-    context.setState(s => ({ ...s, tokensSent: status }));
+    context.setState(s => ({ state: { ...s.state, tokensSent: status} }));
 }
 
 export const checkForCookieWallet = async (context, cookies) => {
@@ -94,7 +96,7 @@ export function MadProvider({ children }) {
     const [state, setState] = React.useState(defaultState);
 
     return (
-        <MadContext.Provider value={{ state: state, setState: setState }}>
+        <MadContext.Provider value={{ ...state, setState: setState }}>
             {children}
         </MadContext.Provider>
     )

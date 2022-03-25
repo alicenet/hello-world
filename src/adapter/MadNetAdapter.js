@@ -2,21 +2,16 @@ import MadWallet from 'madnetjs';
 import { defaultState } from '../context/MadWalletContext';
 
 //TODO add to env because no CRA
-const REACT_APP__ETHEREUM_PROVIDER="http://catmad.duckdns.org:20001/"
-const REACT_APP__MAD_NET_PROVIDER="http://catmad.duckdns.org:20000/v1/"
-const REACT_APP__REGISTRY_CONTRACT_ADDRESS="0x0b1f9c2b7bed6db83295c7b5158e3806d67ec"
+const REACT_APP__MAD_NET_PROVIDER="https://mad.catmad.duckdns.org/v1/"
 
 const SECP256K1 = 1;
 const VALUE_STORE = 2;
 const DATA_STORE = 1;
 
 export const initialConfigurationState = {
-    ethereum_provider: REACT_APP__ETHEREUM_PROVIDER, // Ethereum RPC endpoint
     mad_net_provider: REACT_APP__MAD_NET_PROVIDER, // MadNet API endpoint
-    registry_contract_address: REACT_APP__REGISTRY_CONTRACT_ADDRESS, // Contract address for Registry Contract
     advanced_settings: false,
 }
-
 
 let madWallet = new MadWallet(false, initialConfigurationState.mad_net_provider);
 
