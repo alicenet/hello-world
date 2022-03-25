@@ -1,5 +1,5 @@
 const axios = require('axios');
-const root = "http://catmad.duckdns.org:20002"
+const root = "https://fund.catmad.duckdns.org/"
 
 const get = async (path) => {
     try {

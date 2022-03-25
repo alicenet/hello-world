@@ -1,6 +1,6 @@
+const dotenv = require('dotenv');
 const webpack = require('webpack');
-const path = require('path');
-const nodeExternals = require('webpack-node-externals');
+const { DefinePlugin } = require('webpack');
 
 // eslint-disable-next-line
 module.exports = function (context, options) {
@@ -32,7 +32,7 @@ module.exports = function (context, options) {
                     new webpack.ProvidePlugin({
                         process: 'process/browser',
                         Buffer: ['buffer', 'Buffer']
-                    })
+                    }),
                 ],
                 output: {
                     libraryTarget: "umd"
