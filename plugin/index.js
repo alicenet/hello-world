@@ -1,6 +1,4 @@
-const dotenv = require('dotenv');
 const webpack = require('webpack');
-const { DefinePlugin } = require('webpack');
 
 // eslint-disable-next-line
 module.exports = function (context, options) {
@@ -39,6 +37,7 @@ module.exports = function (context, options) {
                 }
             };
 
+            // Config only for server - Exclude madnetjs library from the output bundle 
             if(isServer) {
                 webpackConfig = {
                     ...webpackConfig,
