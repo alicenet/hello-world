@@ -9,8 +9,10 @@ import GenerateWallet from './quickstart-steps/GenerateWallet';
 import FundWallet from './quickstart-steps/FundWallet';
 import SendValue from './quickstart-steps/SendValue'
 import StoreData from './quickstart-steps/StoreData'
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
 import 'semantic-ui-css/semantic.min.css'
+import madNetAdapter from '../adapter/MadNetAdapter';
 
 const QuickStart = () => {
 
@@ -18,6 +20,8 @@ const QuickStart = () => {
     const gotoStep = (stepNum) => { setStep(stepNum); }
     const nextStep = () => { setStep(s => s + 1); }
     const ctx = useContext(MadContext);
+
+    const { siteConfig } = useDocusaurusContext();
 
     const [cookies] = useCookies()
 
@@ -38,10 +42,9 @@ const QuickStart = () => {
 
     // Try to load wallet if possible
     React.useEffect(() => {
+        madNetAdapter.init(siteConfig);
         checkForCookieWallet(ctx, cookies);
     }, [step])
-
-    console.log(Container)
 
     return (
         <Container>

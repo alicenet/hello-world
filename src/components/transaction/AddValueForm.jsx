@@ -47,7 +47,6 @@ export function AddValueForm({ onSendValue }) {
             await madNetAdapter.createAndsendTx(tx);
             setTimeout(async () => {
                 // Give the network a few seconds to catch up after the success
-                console.log("UPDATE");
                 await updateBalances();
                 onSendValue();
                 setLoading(false);

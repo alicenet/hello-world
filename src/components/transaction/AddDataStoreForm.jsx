@@ -67,7 +67,6 @@ export function AddDataStoreForm() {
 
 
         } catch (exception) {
-            console.log(exception)
             setLoadingWrite(false);
             setError(exception);
         }
@@ -85,7 +84,6 @@ export function AddDataStoreForm() {
             setLoadingRead(false);
 
         } catch (exception) {
-            console.log(exception)
             setLoadingRead(false);
             setError(exception);
         }

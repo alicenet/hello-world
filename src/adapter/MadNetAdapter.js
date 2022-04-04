@@ -1,27 +1,20 @@
 import MadWallet from 'madnetjs';
 import { defaultState } from '../context/MadWalletContext';
 
-//TODO add to env because no CRA
-const REACT_APP__MAD_NET_PROVIDER="https://mad.catmad.duckdns.org/v1/"
-
 const SECP256K1 = 1;
 const VALUE_STORE = 2;
 const DATA_STORE = 1;
 
-export const initialConfigurationState = {
-    mad_net_provider: REACT_APP__MAD_NET_PROVIDER, // MadNet API endpoint
-    advanced_settings: false,
-}
-
-let madWallet = new MadWallet(false, initialConfigurationState.mad_net_provider);
-
 class MadNetAdapter {
 
-    constructor() {
+    constructor(provider) {
         
-        this.wallet = () => madWallet; // Get latest madWallet for any actions needing it.
-        this.provider = initialConfigurationState.mad_net_provider;
+        this.walletInstance = null;
+        this.wallet = () => (this.walletInstance);
+        this.provider = provider;
         
+        this.initiated = false;
+
         this.context = null;
 
         this.connected = this._handleContextValue(["connected"]);
@@ -72,25 +65,19 @@ class MadNetAdapter {
 
         this.errors = {};
 
+    }
+
+    init(siteConfig) {
+        if (this.initiated) { return }
+        this.walletInstance = new MadWallet(false, siteConfig.customFields.MADNET_API);
+        this.provider = siteConfig.customFields.MADNET_API;
         this.__init();
-
-    }
-
-    /**
-     * Updates the current state handlers with a new context reference
-     */
-    updateContext(reactMadNetContext) {
-        this.context = reactMadNetContext;
-    }
-
-    getMadNetWalletInstance() {
-        return this.wallet();
     }
 
     /**
      * Initiate the madNet Adapter and verify a connection is possible
      */
-    async __init(config = {}) {
+     async __init() {
         try {
             await this.wallet().Rpc.setProvider(this.provider)
             // Attempt to get fees -- RPC will throw if unfetchable
@@ -102,11 +89,22 @@ class MadNetAdapter {
                 minTxFee: fees.MinTxFee,
                 valueStoreFee: fees.ValueStoreFee
             });
+            this.initiated = true;
             return { success: true }
         } catch (ex) {
-            console.error(ex);
             return ({ error: ex })
         }
+    }
+
+    /**
+     * Updates the current state handlers with a new context reference
+     */
+    updateContext(reactMadNetContext) {
+        this.context = reactMadNetContext;
+    }
+
+    getMadNetWalletInstance() {
+        return this.wallet();
     }
 
     /**
@@ -159,7 +157,6 @@ class MadNetAdapter {
             // Success TX Mine
             return { "txDetails": txDetails.Tx, "txHash": tx, "msg": "Mined: " + this.trimTxHash(tx) };
         } catch (ex) {
-            console.log(ex)
             await this.sleep(2000);
             this.monitorPending(tx);
         }
@@ -223,7 +220,7 @@ let madNetAdapter = new MadNetAdapter();
  * @param {*} context 
  * @returns 
  */
-export const useMadNetAdapter = (context) => {
+ export const useMadNetAdapter = (context) => {
     madNetAdapter.updateContext(context);
     return madNetAdapter;
 }

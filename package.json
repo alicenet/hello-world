@@ -30,7 +30,6 @@
         "babel-preset-react": "^6.16.0",
         "babel-preset-stage-1": "^6.16.0",
         "clsx": "^1.1.1",
-        "docusaurus2-dotenv": "^1.4.0",
         "dotenv": "^16.0.0",
         "ethers": "5.5.3",
         "jsdoc": "3.6.10",

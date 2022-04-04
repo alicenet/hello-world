@@ -1,10 +1,11 @@
 
 import React, { useState, useContext, useEffect } from 'react';
 import { Button, Segment, Message, Icon } from 'semantic-ui-react';
-import { fundAddress } from '../../api/api';
+import { get } from '../../api/api';
 import { MadContext, updateBalance } from '../../context/MadWalletContext';
 import Link from '@docusaurus/Link';
 import styles from '../quickstart.module.css';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
 export default function FundWallet({ nextStep }) {
 
@@ -17,6 +18,7 @@ export default function FundWallet({ nextStep }) {
     };
 
     const [loading, setLoading] = useState(false);
+    const { siteConfig } = useDocusaurusContext();
 
     useEffect(() => {
         const loadBalance = async () => {
@@ -28,9 +30,8 @@ export default function FundWallet({ nextStep }) {
     const callApiForFunding = async () => {
         setLoading(true);
         setError('');
-
         try {
-            let res = await fundAddress(address);
+            let res = await get(siteConfig.customFields.TEST_FUND_API + '/fund/' + address);
             if (res.error) {
                 setError(res.error);
             }
@@ -48,7 +49,7 @@ export default function FundWallet({ nextStep }) {
             <Segment color={balance >= 2000 ? "green" : "yellow"}>
                 You're about to fund the following address: <strong>{address}</strong>
                 <br /> <br />
-                This can take up to a minute or two, so go ahead and press the button to get started.<br /> <br/>
+                This can take up to a minute or two, so go ahead and press the button to get started.<br /> <br />
                 Please wait for funding to finish.
                 <br />
                 <Button loading={loading} style={{ marginTop: "2rem" }} color="green" disabled={balance >= 2000} size="small" basic
@@ -64,7 +65,7 @@ export default function FundWallet({ nextStep }) {
     }
 
     return (
-        <div style={{textAlign: "left"}}>
+        <div style={{ textAlign: "left" }}>
             <Link className={styles.inDepthLink} to="/docs/ui-in-depth/fund-a-wallet" target="_blank">
                 <Icon name="external" size="small" />
             </Link>
