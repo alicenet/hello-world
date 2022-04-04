@@ -35,7 +35,7 @@ export function GenerateWalletAgreement({ tickState, setTickState }) {
 
             <br /><br />
 
-            <Checkbox label="I Agree" checked={tickState} onClick={(e, data) => { setTickState(data.checked); console.log(data.checked) }} />
+            <Checkbox label="I Agree" checked={tickState} onClick={(e, data) => { setTickState(data.checked);}} />
 
             <Header as="h5" style={{ marginTop: "1rem" }}>
                 {tickState ? wallets.length == 0 ? "Thanks! -- You're ready to generate a demo wallet" : "You've already generated a demo wallet." : "Please agree to the above terms"}

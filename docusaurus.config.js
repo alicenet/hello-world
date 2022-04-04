@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 const lightCodeTheme = require('prism-react-renderer/themes/github');
@@ -18,6 +20,11 @@ const config = {
         // 'docusaurus-tailwindcss',
         require.resolve('./plugin/index.js'),
     ],
+
+    customFields: {
+        'MADNET_API': process.env.REACT_APP_MADNET_RPC_ENDPOINT,
+        'TEST_FUND_API': process.env.REACT_APP_TEMP_FUND_API_ENDPONT,
+    },
 
     presets: [
         [
