@@ -38,7 +38,6 @@ export default function FundWallet({ nextStep }) {
             await updateBalance(ctx, address);
             setLoading(false);
         } catch (exception) {
-            console.log(exception);
             setError(exception);
             setLoading(false);
         }
