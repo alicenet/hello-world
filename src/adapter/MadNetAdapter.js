@@ -69,10 +69,8 @@ class MadNetAdapter {
 
     init(siteConfig) {
         if (this.initiated) { return }
-        console.log(siteConfig);
         this.walletInstance = new MadWallet(false, siteConfig.customFields.MADNET_API);
         this.provider = siteConfig.customFields.MADNET_API;
-        console.log(this.wallet())
         this.__init();
     }
 
@@ -94,7 +92,6 @@ class MadNetAdapter {
             this.initiated = true;
             return { success: true }
         } catch (ex) {
-            console.error(ex);
             return ({ error: ex })
         }
     }
