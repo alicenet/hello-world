@@ -47,7 +47,8 @@ export function AddDataStoreForm() {
                 duration: formState.Duration.value,
                 type: DATA_STORE,
             }
-            await madNetAdapter.createAndsendTx(tx);
+            const txHsh = await madNetAdapter.createAndsendTx(tx);
+            console.log(txHsh);
 
             setTimeout(async () => {
                 // Give the network a few seconds to catch up after the success

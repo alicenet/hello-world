@@ -133,21 +133,32 @@ class MadNetAdapter {
         } else if (tx.type === DATA_STORE) {
             await this.wallet().Transaction.createDataStore(tx.from, tx.key, tx.duration, tx.value);
         }
-        await this.sendTx();
+        // await this.sendTx();
+        return await this.sendWaitableTx();
+    }
+
+    async sendWaitableTx() {
+        try {
+            const { txHash, wait } = await this.wallet().Transaction.sendWaitableTx();
+            wait();
+            await this.wallet().Transaction._reset();
+            
+            return this.trimTxHash(txHash);
+        } catch(exception) {
+            return ({ error: exception });
+        }
     }
 
     async sendTx() {
         try {
-            
             const pendingTransaction = await this.wallet().Transaction.sendTx();
             await this.wallet().Transaction._reset();
-
+            
             return await this.monitorPending(pendingTransaction);
         } catch(exception) {
             await this.sleep(2000);
             this.sendTx();
         }
-        
     }
 
     // Monitor the pending transaction the was sent
@@ -220,7 +231,7 @@ let madNetAdapter = new MadNetAdapter();
  * @param {*} context 
  * @returns 
  */
- export const useMadNetAdapter = (context) => {
+export const useMadNetAdapter = (context) => {
     madNetAdapter.updateContext(context);
     return madNetAdapter;
 }

@@ -13,7 +13,7 @@ export default function SendValue({ nextStep }) {
 
     const ctx = useContext(MadContext);
 
-    const { tokensSent } = ctx.state;
+    const { tokensSent, txExplore: { txHash } } = ctx.state;
 
     const onSendValue = () => {
         updateTokensSentStatus(ctx, true);
@@ -29,7 +29,11 @@ export default function SendValue({ nextStep }) {
             <div style={{ marginTop: "1rem" }}>
                 <AddValueForm onSendValue={onSendValue} />
             </div>
-            <div className={styles.buttonWrap}>
+            <div className={styles.buttonWrap} style={{ justifyContent: "space-between" }}>
+                <Link to="https://testnet.mnexplore.com/tx?txHash=" target="_blank">
+                    Latest Tx hash: {txHash} 
+                </Link>
+
                 <Button color={tokensSent ? "green" : "orange"} onClick={nextStep} disabled={!tokensSent}
                     content={tokensSent ? "Continue" : "Send some tokens first"}
                     labelPosition="right" icon={!tokensSent ? "x" : "arrow right"} floated='right' />

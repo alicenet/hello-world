@@ -32,6 +32,7 @@ const QuickStart = () => {
 
     const getStepContent = (props) => {
         switch (step) {
+            default: 
             case 0: return <GettingStarted {...props} />;
             case 1: return <GenerateWallet {...props} />;
             case 2: return <FundWallet {...props} />;
@@ -53,35 +54,35 @@ const QuickStart = () => {
 
                 <Step.Group attached="top">
 
-                    <Step active={step == 0} completed={false} onClick={() => gotoStep(0)}>
+                    <Step active={step === 0} completed={false} onClick={() => gotoStep(0)}>
                         <Step.Content>
                             <Step.Title>Getting Started</Step.Title>
                             <Step.Description>What is this for?</Step.Description>
                         </Step.Content>
                     </Step>
 
-                    <Step active={step == 1} completed={false} onClick={() => gotoStep(1)}>
+                    <Step active={step === 1} completed={false} onClick={() => gotoStep(1)}>
                         <Step.Content>
                             <Step.Title>Create A Test Wallet</Step.Title>
                             <Step.Description>Required to hold tokens</Step.Description>
                         </Step.Content>
                     </Step>
 
-                    <Step active={step == 2} completed={false} disabled={!hasWalletSetup} onClick={() => gotoStep(2)}>
+                    <Step active={step === 2} completed={false} disabled={!hasWalletSetup} onClick={() => gotoStep(2)}>
                         <Step.Content>
                             <Step.Title>Get some tokens</Step.Title>
                             <Step.Description>CRUD requires tokens</Step.Description>
                         </Step.Content>
                     </Step>
 
-                    <Step active={step == 3} completed={false} disabled={!hasSufficientBalance} onClick={() => gotoStep(3)}>
+                    <Step active={step === 3} completed={false} disabled={!hasSufficientBalance} onClick={() => gotoStep(3)}>
                         <Step.Content>
                             <Step.Title>Send Value</Step.Title>
                             <Step.Description>Send some tokens</Step.Description>
                         </Step.Content>
                     </Step>
 
-                    <Step active={step == 4} completed={false} disabled={!tokensSent} onClick={() => gotoStep(4)}>
+                    <Step active={step === 4} completed={false} disabled={!tokensSent} onClick={() => gotoStep(4)}>
                         <Icon name="database" />
                         <Step.Content>
                             <Step.Title>Store Data</Step.Title>

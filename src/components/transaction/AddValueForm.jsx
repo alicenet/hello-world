@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Button, Form, Grid, Icon, Message, Table, TableHeaderCell } from 'semantic-ui-react';
+import { Button, Form, Grid, Message, Table, TableHeaderCell } from 'semantic-ui-react';
 import { useFormState } from '../../hooks';
 import { MadContext, updateBalance } from '../../context/MadWalletContext';
 import { useMadNetAdapter } from '../../adapter/MadNetAdapter';
@@ -44,7 +44,8 @@ export function AddValueForm({ onSendValue }) {
                 value: formState.Value.value,
                 type: VALUE_STORE,
             }
-            await madNetAdapter.createAndsendTx(tx);
+            const txHsh = await madNetAdapter.createAndsendTx(tx);
+            console.log(txHsh);
             setTimeout(async () => {
                 // Give the network a few seconds to catch up after the success
                 await updateBalances();

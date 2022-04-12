@@ -41,6 +41,12 @@ export default function StoreData() {
             <div style={{ marginTop: "1rem" }}>
                 <AddDataStoreForm />
             </div>
+
+            <div className={styles.buttonWrap} style={{ justifyContent: "space-between" }}>
+                <Link to="https://testnet.mnexplore.com/tx?txHash=" target="_blank">
+                    Latest Tx hash: {'txHash'}
+                </Link>
+            </div>
         </div>
     )
 }
