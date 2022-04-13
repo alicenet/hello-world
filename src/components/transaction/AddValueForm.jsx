@@ -1,9 +1,11 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Button, Form, Grid, Message, Table, TableHeaderCell } from 'semantic-ui-react';
+import { Button, Form, Grid, Message, Table, TableHeaderCell, Segment, Icon } from 'semantic-ui-react';
 import { useFormState } from '../../hooks';
-import { MadContext, updateBalance, updateTxExplore } from '../../context/MadWalletContext';
+import { MadContext, updateBalance } from '../../context/MadWalletContext';
 import { useMadNetAdapter } from '../../adapter/MadNetAdapter';
 import { useCookies } from 'react-cookie';
+import Link from '@docusaurus/Link';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
 const DESTINATION_WALLET = '01527b9166b4e323384a536996e84f572bab62a0';
 const DEFAULT_VALUE = '100';
@@ -11,7 +13,7 @@ const VALUE_STORE = 2;
 
 export function AddValueForm({ onSendValue }) {
 
-    const ctx = useContext(MadContext);
+    const { siteConfig } = useDocusaurusContext();
 
     const madAdapterContext = useContext(MadContext);
     const madNetAdapter = useMadNetAdapter(madAdapterContext);
@@ -28,6 +30,7 @@ export function AddValueForm({ onSendValue }) {
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [txHash, setTxHash] = useState('');
 
     const updateBalances = async () => {
         let [balanceFrom] = await madNetAdapter._getMadNetWalletBalanceAndUTXOs(formState.From.value);
@@ -47,12 +50,11 @@ export function AddValueForm({ onSendValue }) {
                 type: VALUE_STORE,
             }
             const txHash = await madNetAdapter.createAndsendTx(tx);
-            console.log(txHash);
 
             setTimeout(async () => {
                 // Give the network a few seconds to catch up after the success
                 await updateBalances();
-                updateTxExplore(ctx, { txHash });
+                setTxHash(txHash);
                 onSendValue();
                 setLoading(false);
                 setCookie('aliceNetDemo-has-sent-value', true);
@@ -74,7 +76,7 @@ export function AddValueForm({ onSendValue }) {
 
         }
         loadBalances();
-    }, [])
+    }, []);
 
     return (
         <div style={{ margin: '1rem 3rem' }}>
@@ -139,6 +141,18 @@ export function AddValueForm({ onSendValue }) {
                 <Grid.Row>
                     <Grid.Column width={16}>
                         {error && <Message error>There was a problem during the transaction</Message>}
+                    </Grid.Column>
+                </Grid.Row>
+
+                <Grid.Row>
+                    <Grid.Column width={16}>
+                        {txHash && <Segment secondary basic style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "auto" }}>
+                            <Icon size="small" name="exchange" />
+                            <span style={{ marginRight: "1rem" }}>Latest Tx hash:  </span>
+                            <Link to={`${siteConfig.customFields.BLOCK_EXPLORER_URL}tx?txHash=${txHash}`} target="_blank">
+                                {txHash} 
+                            </Link>
+                        </Segment>}
                     </Grid.Column>
                 </Grid.Row>
 

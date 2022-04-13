@@ -1,9 +1,11 @@
 import React, { useState, useContext } from 'react';
 import { Button, Form, Grid, Icon, Message, Segment } from 'semantic-ui-react';
 import { useFormState } from '../../hooks';
-import { MadContext, updateBalance, updateTxExplore } from '../../context/MadWalletContext';
+import { MadContext, updateBalance } from '../../context/MadWalletContext';
 import { useMadNetAdapter } from '../../adapter/MadNetAdapter';
 import utils from '../../utils';
+import Link from '@docusaurus/Link';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
 const DEFAULT_VALUE = '';
 const DEFAULT_KEY = '';
@@ -14,7 +16,7 @@ const MAX_UTXOS = 255;
 
 export function AddDataStoreForm() {
 
-    const ctx = useContext(MadContext);
+    const { siteConfig } = useDocusaurusContext();  
 
     const madAdapterContext = useContext(MadContext);
     const madNetAdapter = useMadNetAdapter(madAdapterContext);
@@ -26,6 +28,7 @@ export function AddDataStoreForm() {
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState('');
     const [storedData, setStoredData] = useState('');
+    const [txHash, setTxHash] = useState('');
 
     const [successButtonContent, setSuccessButtonContent] = useState(<> <Icon name='chart bar' />&nbsp;Write value at index</>);
 
@@ -50,14 +53,13 @@ export function AddDataStoreForm() {
                 type: DATA_STORE,
             }
             const txHash = await madNetAdapter.createAndsendTx(tx);
-            console.log(txHash);
 
             setTimeout(async () => {
                 // Give the network a few seconds to catch up after the success
                 let [balanceFrom] = await madNetAdapter._getMadNetWalletBalanceAndUTXOs(formState.From.value);
 
                 updateBalance(madAdapterContext, formState.From.value, balanceFrom);
-                updateTxExplore(ctx, { txHash });
+                setTxHash(txHash);
                 setSuccessButtonContent(<><Icon name='thumbs up' color='teal' />&nbsp;Success</>);
 
                 setTimeout(() => {
@@ -91,8 +93,6 @@ export function AddDataStoreForm() {
             setError(exception);
         }
     }
-
-
 
     return (
         <div>
@@ -192,6 +192,15 @@ export function AddDataStoreForm() {
                 </Grid>
 
             </Segment>
+
+            {txHash && <Segment secondary basic style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "auto" }}>
+                <Icon size="small" name="exchange" />
+                <span style={{ marginRight: "1rem" }}>Latest Tx hash:  </span>
+                <Link to={`${siteConfig.customFields.BLOCK_EXPLORER_URL}tx?txHash=${txHash}`} target="_blank">
+                    {txHash} 
+                </Link>
+            </Segment>}
+
 
             <div>{error && <Message error>There was a problem during the transaction</Message>}</div>
 

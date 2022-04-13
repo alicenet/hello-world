@@ -1,10 +1,8 @@
-import React, { useContext }  from 'react';
+import React from 'react';
 import { List, Icon } from 'semantic-ui-react';
 import { AddDataStoreForm } from '../../components/transaction';
 import Link from '@docusaurus/Link';
 import styles from '../quickstart.module.css';
-import { MadContext } from '../../context/MadWalletContext';
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
 export default function StoreData() {
 
@@ -20,10 +18,6 @@ export default function StoreData() {
      * 
      * See whiteboarding image from Adam for details
      */
-    const ctx = useContext(MadContext);
-    const { siteConfig } = useDocusaurusContext();  
-
-    const { txExplore: { txHash } } = ctx.state;
 
     return (
         <div style={{ textAlign: "left" }}>
@@ -46,12 +40,6 @@ export default function StoreData() {
             Try <i>writing a value</i> first at an index, and <i>then reading it</i> below.
             <div style={{ marginTop: "1rem" }}>
                 <AddDataStoreForm />
-            </div>
-
-            <div className={styles.buttonWrap} style={{ justifyContent: "space-between" }}>
-                {txHash && <Link to={`${siteConfig.customFields.BLOCK_EXPLORER_URL}tx?txHash=${txHash}`} target="_blank">
-                    Latest Tx hash: {txHash}
-                </Link>}
             </div>
         </div>
     )
