@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Button, Form, Grid, Message, Table, TableHeaderCell } from 'semantic-ui-react';
 import { useFormState } from '../../hooks';
-import { MadContext, updateBalance } from '../../context/MadWalletContext';
+import { MadContext, updateBalance, updateTxExplore } from '../../context/MadWalletContext';
 import { useMadNetAdapter } from '../../adapter/MadNetAdapter';
 import { useCookies } from 'react-cookie';
 
@@ -10,6 +10,8 @@ const DEFAULT_VALUE = '100';
 const VALUE_STORE = 2;
 
 export function AddValueForm({ onSendValue }) {
+
+    const ctx = useContext(MadContext);
 
     const madAdapterContext = useContext(MadContext);
     const madNetAdapter = useMadNetAdapter(madAdapterContext);
@@ -44,11 +46,13 @@ export function AddValueForm({ onSendValue }) {
                 value: formState.Value.value,
                 type: VALUE_STORE,
             }
-            const txHsh = await madNetAdapter.createAndsendTx(tx);
-            console.log(txHsh);
+            const txHash = await madNetAdapter.createAndsendTx(tx);
+            console.log(txHash);
+
             setTimeout(async () => {
                 // Give the network a few seconds to catch up after the success
                 await updateBalances();
+                updateTxExplore(ctx, { txHash });
                 onSendValue();
                 setLoading(false);
                 setCookie('aliceNetDemo-has-sent-value', true);

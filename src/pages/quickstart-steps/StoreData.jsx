@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useContext }  from 'react';
 import { List, Icon } from 'semantic-ui-react';
 import { AddDataStoreForm } from '../../components/transaction';
 import Link from '@docusaurus/Link';
 import styles from '../quickstart.module.css';
+import { MadContext } from '../../context/MadWalletContext';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
 export default function StoreData() {
 
@@ -18,6 +20,10 @@ export default function StoreData() {
      * 
      * See whiteboarding image from Adam for details
      */
+    const ctx = useContext(MadContext);
+    const { siteConfig } = useDocusaurusContext();  
+
+    const { txExplore: { txHash } } = ctx.state;
 
     return (
         <div style={{ textAlign: "left" }}>
@@ -43,9 +49,9 @@ export default function StoreData() {
             </div>
 
             <div className={styles.buttonWrap} style={{ justifyContent: "space-between" }}>
-                <Link to="https://testnet.mnexplore.com/tx?txHash=" target="_blank">
-                    Latest Tx hash: {'txHash'}
-                </Link>
+                {txHash && <Link to={`${siteConfig.customFields.BLOCK_EXPLORER_URL}tx?txHash=${txHash}`} target="_blank">
+                    Latest Tx hash: {txHash}
+                </Link>}
             </div>
         </div>
     )

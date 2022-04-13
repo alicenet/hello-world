@@ -58,6 +58,10 @@ export const updateTokensSentStatus = (context, status) => {
     context.setState(s => ({ state: { ...s.state, tokensSent: status} }));
 }
 
+export const updateTxExplore = (context, txExplore) => {
+    context.setState(s => ({ state: { ...s.state, txExplore: { ...context.txExplore, ...txExplore }} }));
+}
+
 export const checkForCookieWallet = async (context, cookies) => {
     if (cookies['aliceNetDemo-raw-root']) {
         if (cookies['aliceNetDemo-has-sent-value'] && cookies['aliceNetDemo-has-sent-value'] === 'true' ) {

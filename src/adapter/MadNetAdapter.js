@@ -143,7 +143,7 @@ class MadNetAdapter {
             wait();
             await this.wallet().Transaction._reset();
             
-            return this.trimTxHash(txHash);
+            return txHash;
         } catch(exception) {
             return ({ error: exception });
         }

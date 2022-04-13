@@ -4,6 +4,7 @@ import styles from '../quickstart.module.css';
 import { MadContext, updateTokensSentStatus } from '../../context/MadWalletContext';
 import { AddValueForm } from '../../components/transaction';
 import Link from '@docusaurus/Link';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
 export default function SendValue({ nextStep }) {
 
@@ -12,6 +13,7 @@ export default function SendValue({ nextStep }) {
     // Additionally we should show the address and balance of both wallets participating in this transaction
 
     const ctx = useContext(MadContext);
+    const { siteConfig } = useDocusaurusContext();
 
     const { tokensSent, txExplore: { txHash } } = ctx.state;
 
@@ -29,10 +31,10 @@ export default function SendValue({ nextStep }) {
             <div style={{ marginTop: "1rem" }}>
                 <AddValueForm onSendValue={onSendValue} />
             </div>
-            <div className={styles.buttonWrap} style={{ justifyContent: "space-between" }}>
-                <Link to="https://testnet.mnexplore.com/tx?txHash=" target="_blank">
+            <div className={styles.buttonWrap} style={{ justifyContent: txHash ? "space-between" : "flex-end" }}>
+                {txHash && <Link to={`${siteConfig.customFields.BLOCK_EXPLORER_URL}tx?txHash=${txHash}`} target="_blank">
                     Latest Tx hash: {txHash} 
-                </Link>
+                </Link>}
 
                 <Button color={tokensSent ? "green" : "orange"} onClick={nextStep} disabled={!tokensSent}
                     content={tokensSent ? "Continue" : "Send some tokens first"}

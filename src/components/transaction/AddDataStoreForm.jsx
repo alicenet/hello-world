@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Button, Form, Grid, Icon, Message, Segment } from 'semantic-ui-react';
 import { useFormState } from '../../hooks';
-import { MadContext, updateBalance } from '../../context/MadWalletContext';
+import { MadContext, updateBalance, updateTxExplore } from '../../context/MadWalletContext';
 import { useMadNetAdapter } from '../../adapter/MadNetAdapter';
 import utils from '../../utils';
 
@@ -13,6 +13,8 @@ const CURVE_TYPE = 1;
 const MAX_UTXOS = 255;
 
 export function AddDataStoreForm() {
+
+    const ctx = useContext(MadContext);
 
     const madAdapterContext = useContext(MadContext);
     const madNetAdapter = useMadNetAdapter(madAdapterContext);
@@ -47,15 +49,15 @@ export function AddDataStoreForm() {
                 duration: formState.Duration.value,
                 type: DATA_STORE,
             }
-            const txHsh = await madNetAdapter.createAndsendTx(tx);
-            console.log(txHsh);
+            const txHash = await madNetAdapter.createAndsendTx(tx);
+            console.log(txHash);
 
             setTimeout(async () => {
                 // Give the network a few seconds to catch up after the success
                 let [balanceFrom] = await madNetAdapter._getMadNetWalletBalanceAndUTXOs(formState.From.value);
 
                 updateBalance(madAdapterContext, formState.From.value, balanceFrom);
-
+                updateTxExplore(ctx, { txHash });
                 setSuccessButtonContent(<><Icon name='thumbs up' color='teal' />&nbsp;Success</>);
 
                 setTimeout(() => {
