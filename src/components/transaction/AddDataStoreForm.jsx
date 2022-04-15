@@ -52,14 +52,14 @@ export function AddDataStoreForm() {
                 duration: formState.Duration.value,
                 type: DATA_STORE,
             }
-            const txHash = await madNetAdapter.createAndsendTx(tx);
+            const { txHash, isMined } = await madNetAdapter.createAndsendTx(tx);
 
             setTimeout(async () => {
                 // Give the network a few seconds to catch up after the success
                 let [balanceFrom] = await madNetAdapter._getMadNetWalletBalanceAndUTXOs(formState.From.value);
 
                 updateBalance(madAdapterContext, formState.From.value, balanceFrom);
-                setTxHash(txHash);
+                if(isMined) setTxHash(txHash);
                 setSuccessButtonContent(<><Icon name='thumbs up' color='teal' />&nbsp;Success</>);
 
                 setTimeout(() => {
@@ -93,6 +93,8 @@ export function AddDataStoreForm() {
             setError(exception);
         }
     }
+
+    console.log(error)
 
     return (
         <div>

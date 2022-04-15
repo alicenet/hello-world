@@ -133,18 +133,16 @@ class MadNetAdapter {
         } else if (tx.type === DATA_STORE) {
             await this.wallet().Transaction.createDataStore(tx.from, tx.key, tx.duration, tx.value);
         }
-        // await this.sendTx();
         return await this.sendWaitableTx();
     }
 
     async sendWaitableTx() {
         try {
-            const { txHash, wait } = await this.wallet().Transaction.sendWaitableTx();
-            wait();
+            const { wait } = await this.wallet().Transaction.sendWaitableTx();
             await this.wallet().Transaction._reset();
-            
-            return txHash;
+            return wait();
         } catch(exception) {
+            console.log(exception)
             return ({ error: exception });
         }
     }

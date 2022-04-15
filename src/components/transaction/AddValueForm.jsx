@@ -49,12 +49,12 @@ export function AddValueForm({ onSendValue }) {
                 value: formState.Value.value,
                 type: VALUE_STORE,
             }
-            const txHash = await madNetAdapter.createAndsendTx(tx);
+            const { txHash, isMined } = await madNetAdapter.createAndsendTx(tx);
 
             setTimeout(async () => {
                 // Give the network a few seconds to catch up after the success
                 await updateBalances();
-                setTxHash(txHash);
+                if(isMined) setTxHash(txHash);
                 onSendValue();
                 setLoading(false);
                 setCookie('aliceNetDemo-has-sent-value', true);
