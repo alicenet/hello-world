@@ -94,8 +94,6 @@ export function AddDataStoreForm() {
         }
     }
 
-    console.log(error)
-
     return (
         <div>
 
