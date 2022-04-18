@@ -11,6 +11,9 @@ export default function FundWallet({ nextStep }) {
 
     const ctx = useContext(MadContext);
     const [error, setError] = useState('');
+    const [success, setSuccess] = useState(false);
+
+    let balanceInterval = React.useRef(null);
 
     const { address, balance } = {
         address: ctx.state.accounts[0],
@@ -25,17 +28,22 @@ export default function FundWallet({ nextStep }) {
             await updateBalance(ctx, address);
         }
         loadBalance();
-    }, [])
+
+        return () => {
+            clearInterval(balanceInterval);
+        }
+    }, [balanceInterval])
 
     const callApiForFunding = async () => {
         setLoading(true);
         setError('');
         try {
-            let res = await get(siteConfig.customFields.TEST_FUND_API + address);
+            let res = await get(siteConfig.customFields.TEST_FUND_API + '/faucet/' + address);
             if (res.error) {
                 setError(res.error);
             }
-            await updateBalance(ctx, address);
+            balanceInterval = setInterval( () => updateBalance(ctx, address), 7500);
+            setSuccess(true);
             setLoading(false);
         } catch (exception) {
             setError(exception);
@@ -49,17 +57,18 @@ export default function FundWallet({ nextStep }) {
             <Segment color={balance >= 2000 ? "green" : "yellow"}>
                 You're about to fund the following address: <strong>{address}</strong>
                 <br /> <br />
-                This can take up to a minute or two, so go ahead and press the button to get started.<br /> <br />
+                This can take a few minutes, so go ahead and press the button to get started.<br /> <br />
                 Please wait for funding to finish.
                 <br />
-                <Button loading={loading} style={{ marginTop: "2rem" }} color="green" disabled={balance >= 2000} size="small" basic
+                <Button loading={loading} style={{ marginTop: "2rem" }} color="green" disabled={balance >= 2000 || success} size="small" basic
                     content={balance >= 2000 ? "Already funded!" : "Fund Above Address"} onClick={callApiForFunding}
                 />
                 <div style={{ marginTop: "1rem", color: "grey" }}>
                     Current Balance: <strong>{balance} Tokens</strong>
                 </div>
                 <br />
-                <div>{error && <Message error>There was a problem during the transaction</Message>}</div>
+                <div>{error && <Message error>There was a problem during the funding request {error.message}</Message>}</div>
+                <div>{success && <Message success>Your funding request has been queued. It can take several minutes for your request to be processed.</Message>}</div>
             </Segment>
         )
     }
