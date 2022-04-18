@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Button, Form, Grid, Icon, Message, Segment } from 'semantic-ui-react';
 import { useFormState } from '../../hooks';
-import { MadContext, updateBalance } from '../../context/MadWalletContext';
+import { MadContext, updateBalance, updateLatestStoredDataTx } from '../../context/MadWalletContext';
 import { useMadNetAdapter } from '../../adapter/MadNetAdapter';
 import utils from '../../utils';
 import Link from '@docusaurus/Link';
@@ -17,18 +17,17 @@ const MAX_UTXOS = 255;
 export function AddDataStoreForm() {
 
     const { siteConfig } = useDocusaurusContext();  
-
     const madAdapterContext = useContext(MadContext);
     const madNetAdapter = useMadNetAdapter(madAdapterContext);
     const state = madAdapterContext.state;
     const wallets = state.accounts;
+    const latestStoredDataTx = state.latestStoredDataTx;
 
     const [loadingWrite, setLoadingWrite] = useState(false);
     const [loadingRead, setLoadingRead] = useState(false);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState('');
     const [storedData, setStoredData] = useState('');
-    const [txHash, setTxHash] = useState('');
 
     const [successButtonContent, setSuccessButtonContent] = useState(<> <Icon name='chart bar' />&nbsp;Write value at index</>);
 
@@ -59,7 +58,7 @@ export function AddDataStoreForm() {
                 let [balanceFrom] = await madNetAdapter._getMadNetWalletBalanceAndUTXOs(formState.From.value);
 
                 updateBalance(madAdapterContext, formState.From.value, balanceFrom);
-                if(isMined) setTxHash(txHash);
+                if(isMined) updateLatestStoredDataTx(madAdapterContext, txHash);
                 setSuccessButtonContent(<><Icon name='thumbs up' color='teal' />&nbsp;Success</>);
 
                 setTimeout(() => {
@@ -193,11 +192,11 @@ export function AddDataStoreForm() {
 
             </Segment>
 
-            {txHash && <Segment secondary basic style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "auto" }}>
+            {latestStoredDataTx && <Segment secondary basic style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "auto" }}>
                 <Icon size="small" name="exchange" />
                 <span style={{ marginRight: "1rem" }}>Latest Tx hash:  </span>
-                <Link to={`${siteConfig.customFields.BLOCK_EXPLORER_URL}tx?txHash=${txHash}`} target="_blank">
-                    {txHash} 
+                <Link to={`${siteConfig.customFields.BLOCK_EXPLORER_URL}tx?txHash=${latestStoredDataTx}`} target="_blank">
+                    {latestStoredDataTx} 
                 </Link>
             </Segment>}
 

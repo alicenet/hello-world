@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Button, Form, Grid, Message, Table, TableHeaderCell, Segment, Icon } from 'semantic-ui-react';
 import { useFormState } from '../../hooks';
-import { MadContext, updateBalance } from '../../context/MadWalletContext';
+import { MadContext, updateBalance,updateLatestSentValueTx } from '../../context/MadWalletContext';
 import { useMadNetAdapter } from '../../adapter/MadNetAdapter';
 import { useCookies } from 'react-cookie';
 import Link from '@docusaurus/Link';
@@ -14,12 +14,12 @@ const VALUE_STORE = 2;
 export function AddValueForm({ onSendValue }) {
 
     const { siteConfig } = useDocusaurusContext();
-
     const madAdapterContext = useContext(MadContext);
     const madNetAdapter = useMadNetAdapter(madAdapterContext);
     const state = madAdapterContext.state;
     const wallets = state.accounts;
     const tokensSent = state.tokensSent;
+    const latestSentValueTx = state.latestSentValueTx;
     const [, setCookie] = useCookies();
 
     const [formState, formSetter] = useFormState([
@@ -30,7 +30,6 @@ export function AddValueForm({ onSendValue }) {
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
-    const [txHash, setTxHash] = useState('');
 
     const updateBalances = async () => {
         let [balanceFrom] = await madNetAdapter._getMadNetWalletBalanceAndUTXOs(formState.From.value);
@@ -54,7 +53,7 @@ export function AddValueForm({ onSendValue }) {
             setTimeout(async () => {
                 // Give the network a few seconds to catch up after the success
                 await updateBalances();
-                if(isMined) setTxHash(txHash);
+                if(isMined) updateLatestSentValueTx(madAdapterContext, txHash);
                 onSendValue();
                 setLoading(false);
                 setCookie('aliceNetDemo-has-sent-value', true);
@@ -148,11 +147,11 @@ export function AddValueForm({ onSendValue }) {
                 </Grid>
             </Segment>
 
-            {txHash && <Segment secondary basic style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "auto" }}>
+            {latestSentValueTx && <Segment secondary basic style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "auto" }}>
                 <Icon size="small" name="exchange" />
                 <span style={{ marginRight: "1rem" }}>Latest Tx hash:  </span>
-                <Link to={`${siteConfig.customFields.BLOCK_EXPLORER_URL}tx?txHash=${txHash}`} target="_blank">
-                    {txHash} 
+                <Link to={`${siteConfig.customFields.BLOCK_EXPLORER_URL}tx?txHash=${latestSentValueTx}`} target="_blank">
+                    {latestSentValueTx} 
                 </Link>
             </Segment>}
         </div>

@@ -31,7 +31,7 @@ export default function FundWallet({ nextStep }) {
         setLoading(true);
         setError('');
         try {
-            let res = await get(siteConfig.customFields.TEST_FUND_API + '/faucet/' + address);
+            let res = await get(siteConfig.customFields.TEST_FUND_API + address);
             if (res.error) {
                 setError(res.error);
             }
