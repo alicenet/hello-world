@@ -1,9 +1,11 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Button, Form, Grid, Icon, Message, Table, TableHeaderCell } from 'semantic-ui-react';
+import { Button, Form, Grid, Message, Table, TableHeaderCell, Segment, Icon } from 'semantic-ui-react';
 import { useFormState } from '../../hooks';
-import { MadContext, updateBalance } from '../../context/MadWalletContext';
+import { MadContext, updateBalance,updateLatestSentValueTx } from '../../context/MadWalletContext';
 import { useMadNetAdapter } from '../../adapter/MadNetAdapter';
 import { useCookies } from 'react-cookie';
+import Link from '@docusaurus/Link';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
 const DESTINATION_WALLET = '01527b9166b4e323384a536996e84f572bab62a0';
 const DEFAULT_VALUE = '100';
@@ -11,11 +13,13 @@ const VALUE_STORE = 2;
 
 export function AddValueForm({ onSendValue }) {
 
+    const { siteConfig } = useDocusaurusContext();
     const madAdapterContext = useContext(MadContext);
     const madNetAdapter = useMadNetAdapter(madAdapterContext);
     const state = madAdapterContext.state;
     const wallets = state.accounts;
     const tokensSent = state.tokensSent;
+    const latestSentValueTx = state.latestSentValueTx;
     const [, setCookie] = useCookies();
 
     const [formState, formSetter] = useFormState([
@@ -44,10 +48,12 @@ export function AddValueForm({ onSendValue }) {
                 value: formState.Value.value,
                 type: VALUE_STORE,
             }
-            await madNetAdapter.createAndsendTx(tx);
+            const { txHash, isMined } = await madNetAdapter.createAndsendTx(tx);
+
             setTimeout(async () => {
                 // Give the network a few seconds to catch up after the success
                 await updateBalances();
+                if(isMined) updateLatestSentValueTx(madAdapterContext, txHash);
                 onSendValue();
                 setLoading(false);
                 setCookie('aliceNetDemo-has-sent-value', true);
@@ -69,75 +75,85 @@ export function AddValueForm({ onSendValue }) {
 
         }
         loadBalances();
-    }, [])
+    }, []);
 
     return (
-        <div style={{ margin: '1rem 3rem' }}>
-            <Grid textAlign="left">
+        <div>
+            <Segment color="blue" style={{ marginBottom: '5px' }}>
+                <Grid textAlign="left" style={{ margin: '1rem' }}>
 
-                <Grid.Row>
-                    <Grid.Column>
-                        <Form.Input
-                            id='Value'
-                            disabled
-                            action={
-                                <Button
-                                    icon={tokensSent ? "thumbs up" : "currency"}
-                                    content={tokensSent ? "Value Sent! (Send Again?)" : "Send Value"}
-                                    basic
-                                    color="teal"
-                                    onClick={(e) => handleSubmit(e)}
-                                    loading={loading}
-                                />
-                            }
-                            required
-                            value={formState.Value.value}
-                            onChange={e => formSetter.setValue(e.target.value)}
-                            error={!!formState.Value.error && { content: formState.Value.error }}
-                        />
-                    </Grid.Column>
-                </Grid.Row>
+                    <Grid.Row>
+                        <Grid.Column>
+                            <Form.Input
+                                id='Value'
+                                disabled
+                                action={
+                                    <Button
+                                        icon={tokensSent ? "thumbs up" : "currency"}
+                                        content={tokensSent ? "Value Sent! (Send Again?)" : "Send Value"}
+                                        basic
+                                        color="teal"
+                                        onClick={(e) => handleSubmit(e)}
+                                        loading={loading}
+                                    />
+                                }
+                                required
+                                value={formState.Value.value}
+                                onChange={e => formSetter.setValue(e.target.value)}
+                                error={!!formState.Value.error && { content: formState.Value.error }}
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
 
-                <Grid.Row>
-                    <Grid.Column width={16}>
-                        <p style={{ fontSize: "11px" }}>
-                            You may notice a deduction on the from account greater than the amount, this is due to the associated Transaction Fees<br />
-                            They are generally quite low for value transactions and should be around ~5-6 tokens at the moment.
-                        </p>
-                    </Grid.Column>
-                </Grid.Row>
+                    <Grid.Row>
+                        <Grid.Column width={16}>
+                            <p style={{ fontSize: "11px" }}>
+                                You may notice a deduction on the from account greater than the amount, this is due to the associated Transaction Fees<br />
+                                They are generally quite low for value transactions and should be around ~5-6 tokens at the moment.
+                            </p>
+                        </Grid.Column>
+                    </Grid.Row>
 
-                <Grid.Row>
-                    <Grid.Column width={16}>
-                        <Table celled>
-                            <Table.Header>
-                                <Table.Row>
-                                    <TableHeaderCell>From (Balance)</TableHeaderCell>
-                                    <TableHeaderCell>To (Balance)</TableHeaderCell>
-                                </Table.Row>
-                            </Table.Header>
-                            <Table.Body>
-                                <Table.Row>
-                                    <Table.Cell>{formState.From.value} ({state.tokenBalances[formState.From.value]})</Table.Cell>
-                                    <Table.Cell>{formState.To.value} ({state.tokenBalances[DESTINATION_WALLET]})</Table.Cell>
-                                </Table.Row>
-                            </Table.Body>
-                        </Table>
-                        <div style={{ fontSize: "11px" }}>
-                            Remember! All actions on AliceNet require a transaction. <br/> 
-                            Whether you are sending a value with ValueStore like in this example, or a DataStore in the next example. <br/>
-                            <b>Both are technically transactions.</b>
-                        </div>
-                    </Grid.Column>
-                </Grid.Row>
+                    <Grid.Row>
+                        <Grid.Column width={16}>
+                            <Table celled>
+                                <Table.Header>
+                                    <Table.Row>
+                                        <TableHeaderCell>From (Balance)</TableHeaderCell>
+                                        <TableHeaderCell>To (Balance)</TableHeaderCell>
+                                    </Table.Row>
+                                </Table.Header>
+                                <Table.Body>
+                                    <Table.Row>
+                                        <Table.Cell>{formState.From.value} ({state.tokenBalances[formState.From.value]})</Table.Cell>
+                                        <Table.Cell>{formState.To.value} ({state.tokenBalances[DESTINATION_WALLET]})</Table.Cell>
+                                    </Table.Row>
+                                </Table.Body>
+                            </Table>
+                            <div style={{ fontSize: "11px" }}>
+                                Remember! All actions on AliceNet require a transaction. <br/> 
+                                Whether you are sending a value with ValueStore like in this example, or a DataStore in the next example. <br/>
+                                <b>Both are technically transactions.</b>
+                            </div>
+                        </Grid.Column>
+                    </Grid.Row>
 
-                <Grid.Row>
-                    <Grid.Column width={16}>
-                        {error && <Message error>There was a problem during the transaction</Message>}
-                    </Grid.Column>
-                </Grid.Row>
+                    <Grid.Row>
+                        <Grid.Column width={16}>
+                            {error && <Message error>There was a problem during the transaction</Message>}
+                        </Grid.Column>
+                    </Grid.Row>
 
-            </Grid>
+                </Grid>
+            </Segment>
+
+            {latestSentValueTx && <Segment secondary basic style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "auto" }}>
+                <Icon size="small" name="exchange" />
+                <span style={{ marginRight: "1rem" }}>Latest Tx hash:  </span>
+                <Link to={`${siteConfig.customFields.BLOCK_EXPLORER_URL}tx?txHash=${latestSentValueTx}`} target="_blank">
+                    {latestSentValueTx} 
+                </Link>
+            </Segment>}
         </div>
     )
 }

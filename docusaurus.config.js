@@ -24,6 +24,7 @@ const config = {
     customFields: {
         'MADNET_API': process.env.REACT_APP_MADNET_RPC_ENDPOINT,
         'TEST_FUND_API': process.env.REACT_APP_TEMP_FUND_API_ENDPONT,
+        'BLOCK_EXPLORER_URL': process.env.REACT_APP_BLOCK_EXPLORER_ENDPONT,
     },
 
     presets: [

@@ -1,9 +1,11 @@
 import React, { useState, useContext } from 'react';
 import { Button, Form, Grid, Icon, Message, Segment } from 'semantic-ui-react';
 import { useFormState } from '../../hooks';
-import { MadContext, updateBalance } from '../../context/MadWalletContext';
+import { MadContext, updateBalance, updateLatestStoredDataTx } from '../../context/MadWalletContext';
 import { useMadNetAdapter } from '../../adapter/MadNetAdapter';
 import utils from '../../utils';
+import Link from '@docusaurus/Link';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
 const DEFAULT_VALUE = '';
 const DEFAULT_KEY = '';
@@ -14,10 +16,12 @@ const MAX_UTXOS = 255;
 
 export function AddDataStoreForm() {
 
+    const { siteConfig } = useDocusaurusContext();  
     const madAdapterContext = useContext(MadContext);
     const madNetAdapter = useMadNetAdapter(madAdapterContext);
     const state = madAdapterContext.state;
     const wallets = state.accounts;
+    const latestStoredDataTx = state.latestStoredDataTx;
 
     const [loadingWrite, setLoadingWrite] = useState(false);
     const [loadingRead, setLoadingRead] = useState(false);
@@ -47,14 +51,14 @@ export function AddDataStoreForm() {
                 duration: formState.Duration.value,
                 type: DATA_STORE,
             }
-            await madNetAdapter.createAndsendTx(tx);
+            const { txHash, isMined } = await madNetAdapter.createAndsendTx(tx);
 
             setTimeout(async () => {
                 // Give the network a few seconds to catch up after the success
                 let [balanceFrom] = await madNetAdapter._getMadNetWalletBalanceAndUTXOs(formState.From.value);
 
                 updateBalance(madAdapterContext, formState.From.value, balanceFrom);
-
+                if(isMined) updateLatestStoredDataTx(madAdapterContext, txHash);
                 setSuccessButtonContent(<><Icon name='thumbs up' color='teal' />&nbsp;Success</>);
 
                 setTimeout(() => {
@@ -88,8 +92,6 @@ export function AddDataStoreForm() {
             setError(exception);
         }
     }
-
-
 
     return (
         <div>
@@ -189,6 +191,15 @@ export function AddDataStoreForm() {
                 </Grid>
 
             </Segment>
+
+            {latestStoredDataTx && <Segment secondary basic style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "auto" }}>
+                <Icon size="small" name="exchange" />
+                <span style={{ marginRight: "1rem" }}>Latest Tx hash:  </span>
+                <Link to={`${siteConfig.customFields.BLOCK_EXPLORER_URL}tx?txHash=${latestStoredDataTx}`} target="_blank">
+                    {latestStoredDataTx} 
+                </Link>
+            </Segment>}
+
 
             <div>{error && <Message error>There was a problem during the transaction</Message>}</div>
 

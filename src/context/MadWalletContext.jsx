@@ -9,6 +9,8 @@ export const defaultState = {
         accounts: [],
         tokenBalances: {}, // K:V where K is address and v is tokenBalance
         tokensSent: false,
+        latestSentValueTx: "",
+        latestStoredDataTx: "",
         config: {
             mad_net_chainID: false, // Not needed
             mad_net_provider: "", // Testnet from env
@@ -55,7 +57,15 @@ export const updateBalance = async (context, address) => {
 }
 
 export const updateTokensSentStatus = (context, status) => {
-    context.setState(s => ({ state: { ...s.state, tokensSent: status} }));
+    context.setState(s => ({ state: { ...s.state, tokensSent: status } }));
+}
+
+export const updateLatestSentValueTx = (context, txHash) => {
+    context.setState(s => ({ state: { ...s.state, latestSentValueTx: txHash } }));
+}
+
+export const updateLatestStoredDataTx = (context, txHash) => {
+    context.setState(s => ({ state: { ...s.state, latestStoredDataTx: txHash } }));
 }
 
 export const checkForCookieWallet = async (context, cookies) => {

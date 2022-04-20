@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Message, Checkbox, Header, List } from 'semantic-ui-react';
 import { MadContext } from "../../../context/MadWalletContext";
 
@@ -12,9 +12,11 @@ export function GenerateWalletAgreement({ tickState, setTickState }) {
 
     const wallets = React.useContext(MadContext).state.accounts;
     
-    if (wallets.length > 0) {
-        setTickState(true); // Show green message if a wallet has been created
-    }
+    useEffect(() => {
+        if (wallets.length > 0) {
+            setTickState(true); // Show green message if a wallet has been created
+        }
+    }, [wallets, setTickState]);
 
     const colorProp = tickState ? { color: "green" } : {};
 
