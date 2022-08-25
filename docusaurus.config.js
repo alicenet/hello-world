@@ -7,15 +7,15 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-    title: 'alice.net - hello alice',
+    title: 'Alice.net - Hello Alice',
     tagline: 'A simple, secure, Layer 2 solution',
     url: 'https://your-docusaurus-test-site.com',
     baseUrl: '/',
     onBrokenLinks: 'throw',
     onBrokenMarkdownLinks: 'warn',
     favicon: 'img/favicon.ico',
-    organizationName: 'MadBase', // Usually your GitHub org/user name.
-    projectName: 'madnet-hello-world', // Usually your repo name.
+    organizationName: 'alicenet', // Usually your GitHub org/user name.
+    projectName: 'hello-world', // Usually your repo name.
     plugins: [
         // 'docusaurus-tailwindcss',
         require.resolve('./plugin/index.js'),
@@ -35,7 +35,7 @@ const config = {
                 docs: {
                     sidebarPath: require.resolve('./sidebars.js'),
                     // Please change this to your repo.
-                    editUrl: 'https://github.com/MadBase/madnet-hello-world/',
+                    editUrl: 'https://github.com/alicenet/hello-world/',
                 },
                 theme: {
                     customCss: require.resolve('./src/css/custom.css'),

@@ -42,7 +42,7 @@ module.exports = function (context, options) {
                 webpackConfig = {
                     ...webpackConfig,
                     externals: {
-                        madnetjs: 'madnetjs'
+                        alicenetjs: 'alicenetjs'
                     }
                 };
             }
