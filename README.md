@@ -1,12 +1,18 @@
-# Website
+# Hello World
 
 This website is built using [Docusaurus 2](https://docusaurus.io/), a modern static website generator.
+
+### Requirements
+- [Node 16](https://nodejs.org/en/download/)
 
 ### Installation
 
 ```
 $ yarn
 ```
+
+### Environment Config
+In the project root folder rename the file `dotenv` to `.env`.
 
 ### Local Development
 
