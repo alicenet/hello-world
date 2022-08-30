@@ -11,7 +11,7 @@ One of AliceNet's core functionalities is built around storing and proving exist
 
 Depending on how many *epochs* a piece of data is stored for will effect the *fees* associated with storing it.
 
-The raw data for a *Data Store* will only persist for as long it is paid for, however the proof of it's existence will be permenent.
+The raw data for a *Data Store* will only persist for as long it is paid for, however the proof of it's existence will be permanent.
 
 ### How it works
 
@@ -44,10 +44,10 @@ const tx = {
 await aliceNetWallet.Transaction.createDataStore(tx.from, tx.index, tx.duration, tx.value);
 
 // Await the send()
-const pendingTransaction = await this.wallet().Transaction.sendTx();
+const pendingTransaction = await aliceNetWallet.Transaction.sendTx();
 
 // Reset the transaction object state for the next transaction
-await this.wallet().Transaction._reset(); 
+await aliceNetWallet.Transaction._reset(); 
 
 // The pending transaction has been submitted, however we are unsure if it's mined yet, to check that we can write an async wrapper
 let minedTx = await monitorPending(pendingTransaction)

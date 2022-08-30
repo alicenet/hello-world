@@ -33,7 +33,7 @@ const tx = {
     from  : "0x0", // From address as a hexadecimal value -- Should be the added account address -- Will work without 0x
     to    : "0x01527b9166b4e323384a536996e84f572bab62a0", // To address as hexadecimal value
     value : "100", // Can be a hexadecimal or integer value -- It will be converted to hexadecimal by library -- No Floats!
-    curve : 1 || 2 // This is the curve used to derrive the public key -- it is required. Default and usual is 1 for secp256k1
+    curve : 1 || 2 // This is the curve used to derive the public key -- it is required. Default and usual is 1 for secp256k1
 }
 
 // Set the fee on the Transaction object
@@ -43,10 +43,10 @@ await aliceNetWallet.Transaction.createTxFee(tx.from, 1); // 1 Is used to design
 await aliceNetWallet.Transaction.createValueStore(tx.from, tx.value, tx.to, 1);
 
 // Await the send()
-const pendingTransaction = await this.wallet().Transaction.sendTx();
+const pendingTransaction = await aliceNetWallet.Transaction.sendTx();
 
 // Reset the transaction object state for the next transaction
-await this.wallet().Transaction._reset(); 
+await aliceNetWallet.Transaction._reset(); 
 
 // The pending transaction has been submitted, however we are unsure if it's mined yet, to check that we can write an async wrapper
 let minedTx = await monitorPending(pendingTransaction)

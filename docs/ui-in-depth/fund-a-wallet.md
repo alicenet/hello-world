@@ -38,7 +38,7 @@ const aliceNetWallet =  new aliceNetJs(false, "<RPC_ENDPOINT>");
 try {
 
     // The below function API method will return UTXO IDs and the sum of value for UTXOs 
-    let [utxoids, balance] = await madWallet.Rpc.getValueStoreUTXOIDs(address, SECP256K1);
+    let [utxoids, balance] = await aliceNetWallet.Rpc.getValueStoreUTXOIDs(address, SECP256K1);
 
     // Balance is a hexadecimal string so we need to parse it with radix 16
     balance = String(parseInt(balance, 16)); 
