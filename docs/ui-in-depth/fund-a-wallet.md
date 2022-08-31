@@ -21,9 +21,9 @@ Once your balance updates you can continue to [sending value](/docs/ui-in-depth/
 
 You can also read more about the underlying balance checking process below.
 
-#### Checking a balance with AliceNetJs
+#### Checking a balance with AliceNetJS
 
-To check a balance with AliceNetJs we can plugin an address and search for ValueStores.
+To check a balance with AliceNetJS we can plugin an address and search for ValueStores.
 
 AliceNet uses an unspent transaction output model for tracking balances similar to Bitcoin.
 
@@ -33,7 +33,7 @@ See the below snippet for an example:
 const aliceNetJs = require('aliceNetJs'); // Import AliceNetJs
 
 // Remember false will let the RPC fetch the correct chainId, but you can supply it if you like.
-const aliceNetWallet =  new aliceNetJs(false, "<RPC_ENDPOINT>"); 
+const aliceNetWallet = new aliceNetJs(false, "<RPC_ENDPOINT>"); 
 
 try {
 
