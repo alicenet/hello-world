@@ -1,4 +1,4 @@
-import MadWallet from 'alicenetjs';
+import MadWallet from '@alicenet_/alicenetjs-legacy';
 import { defaultState } from '../context/MadWalletContext';
 
 const SECP256K1 = 1;
