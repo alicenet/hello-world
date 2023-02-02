@@ -34,11 +34,11 @@ The CRUD tutorial is geared towards DataStores which are an integral part of Ali
 
 ### [Quick Start](/)
 
-This micro app quickly shows what is possible while abstracting the underlying AliceNetJs.
+This micro app quickly shows what is possible while abstracting the underlying AliceNetJS.
 
-You won't look at code here, but you'll be able to interact directly with AliceNet using a lite-ui built with AliceNetJs just for this tutorial.
+You won't look at code here, but you'll be able to interact directly with AliceNet using a lite-ui built with AliceNetJS just for this tutorial.
 
-Additionally, if you're curious, we have provided an indepth look at each step so you can see what calls are being made to AliceNetJs below the hood.
+Additionally, if you're curious, we have provided an in depth look at each step so you can see what calls are being made to AliceNetJS below the hood.
 
 With the UI Guided tutorial you will be able to:
 
@@ -52,9 +52,9 @@ With the UI Guided tutorial you will be able to:
 
 ### [What's Under The Quickstart UI](/docs/ui-in-depth/create-a-wallet)
 
-The documentation alongside this application will give you a directly line of sight to the underlying code being called by the AliceNetJS API to faciliate the CRUD actions.
+The documentation alongside this application will give you a directly line of sight to the underlying code being called by the AliceNetJS API to facilitate the CRUD actions.
 
-Be sure to check out each piece below if you're interested in developing your own applications ontop of AliceNetJS
+Be sure to check out each piece below if you're interested in developing your own applications on top of AliceNetJS
 
 - [Creating A Wallet](http://google.com)
 - [Funding A Wallet](http://google.com)

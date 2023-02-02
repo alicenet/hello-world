@@ -1,6 +1,6 @@
-## MADNET RPC ENDPOINT ##
-REACT_APP_MADNET_RPC_ENDPOINT="https://mad.catmad.duckdns.org/v1/"
-## TEMPORARY FUND API ENDPOINT ##
-REACT_APP_TEMP_FUND_API_ENDPONT="https://fund.catmad.duckdns.org"
-## BLOCK EXPLORER ENDPOINT ##
+## ALICENET RPC ENDPOINT ##
+REACT_APP_MADNET_RPC_ENDPOINT="https://edge.staging.alice.net/v1/"
+## ALICENET FUND API ENDPOINT ##
+REACT_APP_TEMP_FUND_API_ENDPONT="https://fund.edge.staging.alice.net"
+## ALICENET BLOCK EXPLORER ENDPOINT ##
 REACT_APP_BLOCK_EXPLORER_ENDPONT="https://testnet.mnexplore.com/"

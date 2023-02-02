@@ -37,12 +37,12 @@ module.exports = function (context, options) {
                 }
             };
 
-            // Config only for server - Exclude madnetjs library from the output bundle 
+            // Config only for server - Exclude alicenetjs library from the output bundle 
             if(isServer) {
                 webpackConfig = {
                     ...webpackConfig,
                     externals: {
-                        madnetjs: 'madnetjs'
+                        alicenetjs: 'alicenetjs'
                     }
                 };
             }

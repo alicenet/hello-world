@@ -1,11 +1,41 @@
-# Website
+# Hello World
 
-This website is built using [Docusaurus 2](https://docusaurus.io/), a modern static website generator.
+This App is built using [Docusaurus 2](https://docusaurus.io/), a modern static website generator.
+
+### Requirements
+- [Node 16](https://nodejs.org/en/download/)
 
 ### Installation
 
 ```
 $ yarn
+```
+
+### Environment Setup
+In the project root folder rename the file `dotenv` to `.env`.
+
+### Docusaurus Config
+Make sure to update the `docusaurus.config.js` file to reflect your project details.
+```
+const config = {
+    ...
+    organizationName: 'alicenet', // Usually your GitHub org/user name.
+    projectName: 'hello-world', // Usually your repo name.
+    ...
+    presets: [
+        [
+            ...
+            ({
+                docs: {
+                    ...
+                    // Please change this to your repo.
+                    editUrl: 'https://github.com/alicenet/hello-world/',
+                },
+                ...
+            }),
+        ],
+    ],
+}
 ```
 
 ### Local Development

@@ -14,7 +14,7 @@ As noted in the text the following terms apply:
 
 ### How it works
 
-We generate an insecure demonstration private key by hashing date time before adding the key via the underlying AliceNetJs API.
+We generate an insecure demonstration private key by hashing date time before adding the key via the underlying AliceNetJS API.
 
 See the snippet below, and please note, this is an **extremely unsecure** method for generating keys.
 
@@ -27,7 +27,7 @@ const aliceNetJs = require('aliceNetJs'); // Import AliceNetJs
 
 // Create an AliceNetWallet using aliceNetJs's main constructor with params for (chainID, RpcEndpoint) 
 // The chainID will be provided by the RPC if you provide false, but you can provide it here if you like
-const aliceNetWallet =  new aliceNetJs(false, "<RPC_ENDPOINT>"); 
+const aliceNetWallet = new aliceNetJs(false, "<RPC_ENDPOINT>"); 
 
 // Get current data time in seconds and hash it
 // Remember -- This is UNSECURE and for demo purposes only!

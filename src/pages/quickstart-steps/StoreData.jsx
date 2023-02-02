@@ -32,11 +32,11 @@ export default function StoreData() {
                     'Storage length is measured in epochs',
                     'Epochs are equal to 1024 blocks',
                     'A block takes roughly 6 seconds to mine, this means 1 epoch lasts about 100 minutes',
-                    'Index is the location where the data is stores',
+                    'Index is the location where the data is stored',
                     'Value is the actual value of the data'
                 ]
             } />
-            You can think of DataStores as single column database entries, but they do a have a size limit of <strong>(TBD!)</strong> <br />
+            You can think of DataStores as single column database entries, but they do have a size limit of <strong>(TBD!)</strong> <br />
             Try <i>writing a value</i> first at an index, and <i>then reading it</i> below.
             <div style={{ marginTop: "1rem" }}>
                 <AddDataStoreForm />
